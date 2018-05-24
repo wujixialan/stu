@@ -5,13 +5,11 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
     <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
-    <link rel="stylesheet" th:href="@{'/webjars/github-com-fex-team-webuploader/0.1.5/dist/webuploader.css'}">
     <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
     <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
     <script language="JavaScript"
-            th:src="@{'/webjars/github-com-fex-team-webuploader/0.1.5/dist/webuploader.js'}"></script>
-    <script language="JavaScript"
             th:src="@{'/webjars/echarts/3.2.3/echarts.js'}"></script>
+    <script language="JavaScript" data-th-src="@{'http://www.xdocin.com/xdoc.js'}"></script>
 </head>
 <body>
 <input type="hidden" th:value="${sid}" id="sidInput">
@@ -20,6 +18,9 @@
 <div class="layui-container layui-fluid layui-row">
     <button type="button" class="layui-btn layui-col-lg-offset5" id="test1">
         <i class="layui-icon">&#xe67c;</i>导入学生信息
+    </button>
+    <button type="button" class="layui-btn " id="upload">
+        <i class="layui-icon">&#xe67c;</i>上传
     </button>
 </div>
 <script language="JavaScript">
@@ -33,8 +34,20 @@
                 elem: '#test1',
                 //上传接口
                 url: '/stu/student/importStu/',
+                //设置文件不自动上传
+                auto: false,
                 //设置上传文件
                 accept: "file",
+                //绑定一个按钮触发上传
+                bindAction: '#upload',
+                //选择文件后触发
+                choose: function(obj){
+                    console.log(obj);
+                    obj.preview(function(index, file, result){
+                        console.log(result); //得到文件base64编码，比如图片
+                        XDoc.run(result, "pdf", {}, "_blank");
+                    });
+                },
                 //上传完毕回调
                 done: function (res) {
                     console.log(res);

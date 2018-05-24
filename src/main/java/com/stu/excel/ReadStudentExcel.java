@@ -35,6 +35,8 @@ public class ReadStudentExcel {
             student.setBirth(row.getCell(j + 5).getDateCellValue());
             student.setIdCard(row.getCell(j + 6).toString());
             student.setAddress(row.getCell(j + 7).toString());
+            student.setReviewId(0);
+            student.setReviewContent("学生未审核");
             Clazz clazz = new Clazz();
             clazz.setCid(row.getCell(j + 8).toString());
             clazz.setClazzName(row.getCell(j + 9).toString());

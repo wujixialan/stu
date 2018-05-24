@@ -1254,52 +1254,64 @@
       <DataType>varchar(120)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="295" parent="246" name="clazzId">
+    <column id="295" parent="246" name="review_id">
       <Position>10</Position>
+      <Comment>反馈标识</Comment>
+      <DataType>int(11)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="296" parent="246" name="review_content">
+      <Position>11</Position>
+      <Comment>反馈内容</Comment>
+      <DataType>varchar(255)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="297" parent="246" name="clazzId">
+      <Position>12</Position>
       <DataType>varchar(60)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="296" parent="246" name="clazzId">
+    <index id="298" parent="246" name="clazzId">
       <ColNames>clazzId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="297" parent="246" name="PRIMARY">
+    <key id="299" parent="246" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>sid</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="298" parent="246" name="clazzId">
+    <foreign-key id="300" parent="246" name="clazzId">
       <ColNames>clazzId</ColNames>
       <RefSchemaName>stu</RefSchemaName>
       <RefTableName>clazz</RefTableName>
       <RefColNames>cid</RefColNames>
     </foreign-key>
-    <column id="299" parent="247" name="userId">
+    <column id="301" parent="247" name="userId">
       <Position>1</Position>
       <Comment>用户id(如教师代码，学号，管理员id等)</Comment>
       <DataType>varchar(60)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="300" parent="247" name="username">
+    <column id="302" parent="247" name="username">
       <Position>2</Position>
       <Comment>用户姓名</Comment>
       <DataType>varchar(30)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="301" parent="247" name="password">
+    <column id="303" parent="247" name="password">
       <Position>3</Position>
       <Comment>用户密码</Comment>
       <DataType>varchar(60)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="302" parent="247" name="userType">
+    <column id="304" parent="247" name="userType">
       <Position>4</Position>
       <Comment>登录的用户类型</Comment>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="303" parent="247" name="PRIMARY">
+    <key id="305" parent="247" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userId</ColNames>
       <Primary>1</Primary>

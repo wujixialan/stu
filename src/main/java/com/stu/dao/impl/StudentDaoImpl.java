@@ -125,4 +125,19 @@ public class StudentDaoImpl extends BaseDaoImpl implements StudentDao {
     public void delStu(Student stu) {
         getSession().delete(stu);
     }
+
+    /**
+     * 对学生基本信息的审核。
+     *
+     * @param student
+     */
+    @Override
+    public void updateReview(Student student) {
+        String hql = "update Student s set s.reviewId = :reviewId, s.reviewContent = :reviewContent where s.sid = :sid";
+        getSession().createQuery(hql)
+                .setInteger("reviewId", student.getReviewId())
+                .setString("reviewContent", student.getReviewContent())
+                .setString("sid", student.getSid())
+                .executeUpdate();
+    }
 }

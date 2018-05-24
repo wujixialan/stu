@@ -115,4 +115,14 @@ public class StudentServiceImpl implements StudentService {
     public void delStu(Student stu) {
         studentDao.delStu(stu);
     }
+
+    /**
+     * 对学生基本信息的审核。
+     *
+     * @param student
+     */
+    @Override
+    public void updateReview(Student student) {
+        studentDao.updateReview(student);
+    }
 }

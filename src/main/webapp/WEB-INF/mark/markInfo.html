@@ -7,6 +7,8 @@
     <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
     <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
     <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+    <script language="JavaScript" th:src="@{'/js/common.js'}" charset="utf-8"></script>
+
 
 </head>
 <body>
@@ -28,16 +30,15 @@
         </div>
     </div>
     <div class="layui-inline layui-form-pane">
-        <label class="layui-form-label">班级</label>
+        <label class="layui-form-label">申核状态</label>
         <div class="layui-inline">
             <select name="review" id="reviewSearch" class="layui-select" style="width: 120px;">
                 <option th:value="-1">请选择</option>
-                <option th:value="0">待审核</option>
-                <option th:value="1">审核中</option>
-                <option th:value="2">审核完成无误</option>
+                <option th:value="0">待申核</option>
+                <option th:value="1">申核中</option>
+                <option th:value="2">申核完成无误</option>
             </select>
         </div>
-
     </div>
     <button class="layui-btn" data-type="reload">
         <i class="layui-icon layui-icon-search"></i>搜索
@@ -54,11 +55,11 @@
 
     <a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="review"
        th:if="${session.user.userType} ne '学生'">
-        <i class="layui-icon">&#xe640;</i>审核</a>
+        <i class="layui-icon">&#xe640;</i>申核</a>
 
     <a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="review"
        th:if="${session.user.userType} eq '学生'">
-        <i class="layui-icon">&#xe640;</i>审请</a>
+        <i class="layui-icon">&#xe640;</i>申请</a>
 
     <a class="layui-btn layui-btn-danger layui-btn-radius layui-btn-xs" lay-event="del"
        th:if="${session.user.userType} ne '学生'">
@@ -171,79 +172,33 @@
                     var title = "", reviewInt = 0;
                     if (session === "管理员" || session === "教师") {
                         reviewInt = 2;
-                        title = "审核";
+                        title = "申核";
                     }
                     if (session === "学生") {
                         reviewInt = 1;
-                        title = "审请";
+                        title = "申请";
                     }
                     console.log(obj.data.review);
                     if ((session === "管理员" || session === "教师") && obj.data.review === 1) {
-                        confirm(url, title, reviewInt, obj);
+                        $layer.confirm("确认" + title + "吗？", {icon: 3, title: title}, function (index) {
+                            confirm(url, title, reviewInt, obj);
+                            $layer.close(index);
+                        });
                     }
                     if ((session === "管理员" || session === "教师") && obj.data.review != 1) {
-                        msg("已经审核过了");
+                        msg($layer, "已经申核过了");
                     }
                     if (session === "学生" && obj.data.review === 0) {
-                        confirm(url, title, reviewInt, obj);
+                        $layer.confirm("确认" + title + "吗？", {icon: 3, title: title}, function (index) {
+                            confirm(url, title, reviewInt, "", obj);
+                            $layer.close(index);
+                        });
                     }
                     if (session === "学生" && obj.data.review != 0) {
-                        msg("已经申请过了");
+                        msg($layer, "已经申请过了");
                     }
                 }
             });
-
-            /**
-             * 判断显示在数据表格中的审核状态显示。
-             */
-            function review(review) {
-                if (review === 0) {
-                    return "待审核";
-                }
-                if (review === 1) {
-                    return "审核中";
-                }
-                if (review === 2) {
-                    return "审核完成无误";
-                }
-            }
-
-            /**
-             * 提示信息
-             */
-            function msg(content) {
-                $layer.msg(content, {
-                    icon: 1,
-                });
-            }
-
-            /**
-             * 确认是否审核或申请。
-             * @param url：请求地址
-             * @param title：确认框标题
-             * @param reviewInt：审核状态
-             * @param obj
-             */
-            function confirm(url, title, reviewInt, obj) {
-                $layer.confirm("确认" + title + "吗？", {icon: 3, title: title}, function (index) {
-                    $.ajax({
-                        url: url,
-                        type: "post",
-                        data: {
-                            reviewContent: reviewInt,
-                        },
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            var reviewRes = review(res.review);
-                            $(obj.tr[0]).find("td[data-field='review']").children().text(reviewRes);
-                        },
-                        error: function (res) {
-                        }
-                    });
-                    $layer.close(index);
-                });
-            }
         });
     });
 </script>
@@ -264,13 +219,13 @@
 <script th:inline="javascript" type="text/html" id="review">
     {{#
     if (d.review === 0) {
-    return "待审核";
+    return "待申核";
     }
     if (d.review === 1) {
-    return "审核中";
+    return "申核中";
     }
     if (d.review === 2) {
-    return "审核完成无误";
+    return "申核完成无误";
     }
     }}
 </script>

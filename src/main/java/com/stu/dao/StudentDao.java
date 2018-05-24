@@ -48,4 +48,10 @@ public interface StudentDao {
      * @param stu
      */
     public void delStu(Student stu);
+
+    /**
+     * 对学生基本信息的审核。
+     * @param student
+     */
+    public void updateReview(Student student);
 }

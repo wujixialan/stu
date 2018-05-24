@@ -202,4 +202,20 @@ public class StudentController {
         PagMap.map(map, "code", 200);
         return map;
     }
+
+    @PostMapping(value = "/review/{sid}")
+    @ResponseBody
+    public Map<Object, Object> review(@PathVariable String sid, Student student) {
+        Map<Object, Object> map = new HashMap<>();
+        try {
+            studentService.updateReview(student);
+            PagMap.map(map, "code", 200);
+            PagMap.map(map, "review", student.getReviewId());
+            return map;
+        } catch (Exception e) {
+            e.printStackTrace();
+            PagMap.map(map, "code", 400);
+            return map;
+        }
+    }
 }

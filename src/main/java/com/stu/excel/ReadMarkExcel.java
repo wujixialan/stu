@@ -38,13 +38,14 @@ public class ReadMarkExcel {
             mark.setTeam(row.getCell(j + 8).toString());
             mark.setCredit(Double.parseDouble(row.getCell(j + 9).toString()));
             mark.setGpa(Double.parseDouble(row.getCell(j + 10).toString()));
-            mark.setReview(Integer.parseInt(row.getCell(j + 11).toString()));
+            mark.setReview((int) Double.parseDouble(row.getCell(j + 11).toString()));
             marks.add(mark);
         }
         return marks;
     }
 
+//
 //    public static void main(String[] args) throws IOException {
-//        readXlsx("E:\\test.xlsx");
+//        readXlsx1("E:\\mark.xlsx");
 //    }
 }

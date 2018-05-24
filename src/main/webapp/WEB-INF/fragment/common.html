@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script data-th-inline="javascript" type="text/html" id="reviewId" th:fragment="review">
+    {{#
+    if (d.review === 0) {
+    return "待审核";
+    }
+    if (d.review === 1) {
+    return "审核中";
+    }
+    if (d.review === 2) {
+    return "审核完成无误";
+    }
+    }}
+</script>
+
+</body>
+</html>
