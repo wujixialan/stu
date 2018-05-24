@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.stu.entity.Info" table="info" schema="stu">
+        <id name="infoId">
+            <column name="info_id" sql-type="varchar(60)" length="60"/>
+        </id>
+        <property name="infoTitle">
+            <column name="info_title" sql-type="varchar(120)" length="120" not-null="true"/>
+        </property>
+        <property name="infoContent">
+            <column name="info_content" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="infoTime">
+            <column name="info_time" sql-type="date" not-null="true"/>
+        </property>
+        <property name="infoType">
+            <column name="info_type" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+
+        <many-to-one name="user" class="com.stu.entity.User" lazy="false">
+            <column name="info_user_id"></column>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学生成绩添加</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+
+    <script language="JavaScript" charset="utf-8">
+        $(function () {
+            layui.use(["laydate", "form"], function () {
+                var $form = layui.form;
+                $form.verify({
+                    subjectId: function (value, item) {
+                        if (value.trim() === "") {
+                            return "课程编号不能为空";
+                        } 
+                        if (!new RegExp(/^[a-zA-Z0-9]+$/).test(value)) {
+                            return "课程编号只能字母和数字";
+                        }
+                    },
+                    subjectName: function (value, item) {
+                        if (value.trim() === "") {
+                            return "课程名称不能为空";
+                        }
+                        if (!new RegExp(/^[\u4e00-\u9fa5_a-zA-Z+#]+$/).test(value)) {
+                            return "课程名称可以是中英文";
+                        }
+                    },
+                    subjectType: function (value, item) {
+                        if (value.trim() === "") {
+                            return "学科类别不能为空";
+                        }
+                        if (!new RegExp(/^[\u4e00-\u9fa5_a-zA-Z]+$/).test(value)) {
+                            return "学科类别可以是中英文";
+                        }
+                    },
+                    score: function (value, item) {
+                        if (value.trim() === "") {
+                            return "成绩不能为空";
+                        }
+                        if (!new RegExp(/^(0|\d{1,2}|100)(\.\d)?$/).test(value)) {
+                            return "成绩填写不正确，必须是0-100之间的数字";
+                        }
+                    },
+                    team: function (value, item) {
+                        if (value.trim() === "") {
+                            return "学期不能为空";
+                        }
+                        if (!new RegExp(/^[\u4e00-\u9fa5_a-zA-Z0-9\-\s]+$/).test(value)) {
+                            return "学期可以是中英文数字下划线等";
+                        }
+                    },
+                    credit: function (value, item) {
+                        if (value.trim() === "") {
+                            return "学分不能为空";
+                        }
+                        if (!new RegExp(/^(0|\d|1\d|20)(\.\d)?$/).test(value)) {
+                            return "学分填写不正确，必须是0-20之间的数字";
+                        }
+                    },
+                    gpa: function (value, item) {
+                        if (value.trim() === "") {
+                            return "绩点不能为空";
+                        }
+                        if (!new RegExp(/^(0|[0-4])(\.\d)|5.0|5$/).test(value)) {
+                            return "绩点填写不正确，必须是0-5之间的数字";
+                        }
+                    }
+
+                });
+
+                $form.on("submit(markAdd)", function (data) {
+                    $.ajax({
+                        url: data.form.action,
+                        type: data.form.method,
+                        data: data.field,
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if (res.code === 400) {
+                                if (res.subjectId === "subjectId") {
+                                    $("#subjectId").text(res.subjectIdField).css("color", "red");
+                                } else {
+                                    $("#subjectId").text("");
+                                }
+                                if (res.subjectName === "subjectName") {
+                                    $("#subjectName").text(res.subjectNameField).css("color", "red");
+                                } else {
+                                    $("#subjectName").text("");
+                                }
+                                if (res.subjectType === "subjectType") {
+                                    $("#subjectType").text(res.subjectTypeField).css("color", "red");
+                                } else {
+                                    $("#subjectType").text("");
+                                }
+                            }
+                            if (res.code === 200) {
+                                $("#subjectId").text("");
+                                $("#subjectName").text("");
+                                $("#subjectType").text("");
+                                window.location.href = "/stu/mark/to/markInfo/get/get";
+                            }
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+
+<br><br>
+<div class="layui-container layui-fluid layui-row">
+    <form th:action="@{'/mark/markAdd'}" th:method="post" class="layui-form">
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">学生姓名</label>
+            <div class="layui-input-block">
+                <select name="student.sid" lay-search="">
+                    <option th:each="student: ${students}" th:value="${student.sid}" th:text="${student.name}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">课程编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="subjectId" lay-verify="subjectId" placeholder="请输入课程编号" class="layui-input">
+            </div>
+            <span id="subjectId"></span>
+            <span id="msg"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">课程名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="subjectName" lay-verify="subjectName" placeholder="请输入课程名称" class="layui-input">
+            </div>
+            <span id="subjectName"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">成绩</label>
+            <div class="layui-input-block">
+                <input type="text" name="score" lay-verify="score" placeholder="请输入成绩" class="layui-input">
+            </div>
+            <span id="score"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">挂科</label>
+            <div class="layui-input-block">
+                <input type="radio" name="hang" lay-verify="hang" placeholder="请输入成绩" class="layui-input" th:value="是" th:title="是">
+                <input type="radio" name="hang" lay-verify="hang" placeholder="请输入成绩" class="layui-input" th:value="否" th:title="否" checked>
+            </div>
+            <span id="hang"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">初修</label>
+            <div class="layui-input-block">
+                <input type="radio" name="study" lay-verify="study" placeholder="请输入成绩" class="layui-input" th:value="初修" th:title="初修" checked>
+                <input type="radio" name="study" lay-verify="study" placeholder="请输入成绩" class="layui-input" th:value="补考" th:title="补考">
+                <input type="radio" name="study" lay-verify="study" placeholder="请输入成绩" class="layui-input" th:value="重修" th:title="重修">
+            </div>
+            <span id="study"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">学科类别</label>
+            <div class="layui-input-block">
+                <input type="text" name="subjectType" lay-verify="subjectType" placeholder="请输入学科类别"
+                       class="layui-input">
+            </div>
+            <span id="subjectType"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">学期</label>
+            <div class="layui-input-block">
+                <input type="text" name="team" lay-verify="team" placeholder="请输入学期" class="layui-input">
+            </div>
+            <span id="team"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">学分</label>
+            <div class="layui-input-block">
+                <input type="text" name="credit" lay-verify="credit" placeholder="请输入学分" class="layui-input">
+            </div>
+            <span id="address"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">绩点</label>
+            <div class="layui-input-block">
+                <input type="text" name="gpa" lay-verify="gpa" placeholder="请输入绩点" class="layui-input">
+            </div>
+            <span id="clazz.id"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset3 layui-col-lg4">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="markAdd">添加</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

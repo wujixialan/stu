@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>发布信息</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+</head>
+<body>
+<ul class="layui-nav" lay-filter="">
+    <li class="layui-nav-item">
+        学生评优评先系统
+    </li>
+    <li class="layui-nav-item" th:if="${session.user} ne null">
+        <a href="javascript:;">学生信息管理</a>
+        <!-- 二级菜单 -->
+        <dl class="layui-nav-child">
+            <dd><a th:href="@{'/student/to/stuInfo/get'}">学生信息查询</a></dd>
+            <dd><a th:href="@{'/student/to/stuAdd/get'}">学生信息添加</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item" th:if="${session.user} ne null">
+        <a href="javascript:;">学生成绩管理</a>
+        <!-- 二级菜单 -->
+        <dl class="layui-nav-child">
+            <dd><a th:href="@{'/mark/to/markInfo/get/get'}">成绩信息查询</a></dd>
+            <dd><a th:href="@{'/mark/to/markAdd/get/get'}">成绩信息添加</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item" th:if="${session.user} ne null">
+        <a href="javascript:;">评选信息发布管理</a>
+        <!-- 二级菜单 -->
+        <dl class="layui-nav-child">
+            <dd><a th:href="@{'/info/to/info/get'}" class="layui-this">信息发布查询</a></dd>
+            <dd><a th:href="@{'/info/to/infoAdd/get'}">信息发布</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item layui-col-lg-offset4"
+        th:if="${session.user} eq null"><a th:href="@{'/user/to/register'}">注册</a></li>
+    <li class="layui-nav-item" th:if="${session.user} eq null"><a th:href="@{'user/to/login'}">登录</a></li>
+    <li class="layui-nav-item layui-col-lg-offset5" th:unless="${session.user} eq null">
+        <span th:text="${session.user.userId}"></span>
+    </li>
+</ul>
+<br>
+<script language="JavaScript">
+    $(function () {
+        Date.prototype.format = function(format)
+        {
+            /*
+            * format="yyyy-MM-dd hh:mm:ss";
+            */
+            var o = {
+                "M+" : this.getMonth() + 1,
+                "d+" : this.getDate(),
+                "h+" : this.getHours(),
+                "m+" : this.getMinutes(),
+                "s+" : this.getSeconds(),
+                "q+" : Math.floor((this.getMonth() + 3) / 3),
+                "S" : this.getMilliseconds()
+            }
+
+            if (/(y+)/.test(format))
+            {
+                format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4
+                    - RegExp.$1.length));
+            }
+
+            for (var k in o)
+            {
+                if (new RegExp("(" + k + ")").test(format))
+                {
+                    format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                        ? o[k]
+                        : ("00" + o[k]).substr(("" + o[k]).length));
+                }
+            }
+            return format;
+        }
+        $.ajax({
+            url: "/stu/info/info",
+            type: "post",
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $(res.infos).each(function (index, ele) {
+                    var $ul = $("<ul></ul>");
+                    var $li =  $("<li class=\"layui-timeline-item\"></li>");
+                    var $div = $("<div class=\"layui-timeline-content layui-text\"></div>");
+                    var $i = $("<i class=\"layui-icon layui-timeline-axis\">&#xe63f;</i>");
+                    var $h5 = $("<h5></h5>");
+                    var time1 = new Date(ele.infoTime).format("yyyy-MM-dd");
+                    $h5.text(time1);
+                    var $infoDetail= $("<a href=''></a>")
+                    var $edita= $("<a href=''>编辑</a>")
+                    $infoDetail.prop("href", "/stu/info/to/detail/" + ele.infoId);
+                    $infoDetail.prop("style", "color: black; font-size: 20px;");
+                    $edita.prop("href", "/stu/info/to/edit/" + ele.infoId);
+                    $edita.prop("style", "color: black; font-size: 20px;");
+                    $edita.prop("class", "layui-layout-right");
+                    $infoDetail.text(ele.infoTitle);
+                    $div.append($h5).append($infoDetail).append($edita);
+                    $li.append($i).append($div);
+                    $ul.append($li);$("#main").append($ul);
+                });
+            }
+        });
+    });
+</script>
+
+<div class="layui-container layui-fluid" id="main">
+    <!--<ul th:each="info: ${infos}">-->
+        <!--<li class="layui-timeline-item">-->
+            <!--<i class="layui-icon layui-timeline-axis">&#xe63f;</i>-->
+            <!--<div class="layui-timeline-content layui-text">-->
+                <!--<h5 th:text="${#dates.format(info.infoTime, 'yyyy-MM-dd')}"></h5>-->
+                <!--<a th:href="@{'/info/to/detail/' + ${info.infoId}}" th:text="${info.infoTitle}" style="color: black; font-size: 20px;"></a>-->
+                <!--<a th:href="@{'/info/to/edit/' + ${info.infoId}}" th:text="编辑" style="color: black; font-size: 20px;" class="layui-layout-right"></a>-->
+            <!--</div>-->
+        <!--</li>-->
+    <!--</ul>-->
+</div>
+<div class="footer layui-footer layui-col-lg-offset5">
+    © 2018
+</div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

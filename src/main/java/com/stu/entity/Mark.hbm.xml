@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.stu.entity.Mark" table="mark" schema="stu">
+        <id name="markId">
+            <column name="mark_id" sql-type="varchar(60)" length="60"/>
+        </id>
+        <property name="subjectId">
+            <column name="subject_id" sql-type="varchar(60)" length="60"/>
+        </property>
+        <property name="subjectName">
+            <column name="subject_name" sql-type="varchar(30)" length="30" not-null="true"/>
+        </property>
+        <property name="score">
+            <column name="score" sql-type="float(11,2)" precision="11" scale="2" not-null="true"/>
+        </property>
+        <property name="hang">
+            <column name="hang" sql-type="varchar(5)" length="5" not-null="true"/>
+        </property>
+        <property name="study">
+            <column name="study" sql-type="varchar(10)" length="10" not-null="true"/>
+        </property>
+        <property name="review">
+            <column name="review" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="subjectType">
+            <column name="subject_type" sql-type="varchar(10)" length="10" not-null="true"/>
+        </property>
+        <property name="team">
+            <column name="team" sql-type="varchar(50)" length="50" not-null="true"/>
+        </property>
+        <property name="credit">
+            <column name="credit" sql-type="float(11,1)" precision="11" scale="1" not-null="true"/>
+        </property>
+        <property name="gpa">
+            <column name="gpa" sql-type="float(11,1)" precision="11" scale="1" not-null="true"/>
+        </property>
+
+        <many-to-one name="student" class="com.stu.entity.Student" lazy="false">
+            <column name="stu_id"></column>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

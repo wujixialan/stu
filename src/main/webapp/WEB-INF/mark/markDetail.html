@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br>
+
+<div class="layui-row">
+    <div class="layui-col-lg-offset4">
+        <p id="sidP"></p>
+    </div>
+    <table id="mark" lay-filter="mark" width="99%"></table>
+    <div class="layui-form-item layui-col-lg-offset4 layui-col-lg3">
+        <div class="layui-input-block">
+            <a class="layui-btn" th:href="@{'/mark/to/markInfo/get/get'}">返回</a>
+            <a class="layui-btn" th:href="@{'/mark/to/analysis/get/' + ${sid}}">分析</a>
+        </div>
+    </div>
+
+    <input type="hidden" th:value="${sid}" readonly="readonly" id="sidInput">
+</div>
+
+<script th:inline="none">
+    $(function () {
+        layui.use(["table", "util"], function () {
+            var $table = layui.table;
+            var $utils = layui.util;
+            console.log($utils);
+            //第一个实例
+            $table.render({
+                elem: '#mark',
+                height: 462,
+                width: 1360,
+                //数据接口,
+                url: '/stu/mark/markDetail/' + $("#sidInput").val(),
+                //开启分页
+                page: true,
+                //表头
+                cols: [[
+                    {field: 'subjectId', title: '课程编号'},
+                    {field: 'subjectName', title: '课程名称'},
+                    {field: 'score', title: '成绩'},
+                    {field: 'team', title: '学期', width: 200},
+                    {field: 'credit', title: '学分'},
+                    {field: 'gpa', title: '绩点'},
+                ]],
+                done: function (res, curr, count) {
+                    console.log(res.data[0].student.sid);
+                    $("#sidP").text(res.data[0].student.sid + "   " + res.data[0].student.name).css("font-size", "20px");
+                }
+            });
+
+        })
+    });
+</script>
+
+<script th:inline="javascript" type="text/html" id="sid">
+    {{#
+    return d.student.sid;
+    }}
+</script>
+<script th:inline="javascript" type="text/html" id="name">
+    {{#
+    return d.student.name;
+    }}
+</script>
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

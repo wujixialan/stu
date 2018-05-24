@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <link rel="stylesheet" th:href="@{'/webjars/github-com-fex-team-webuploader/0.1.5/dist/webuploader.css'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+    <script language="JavaScript"
+            th:src="@{'/webjars/github-com-fex-team-webuploader/0.1.5/dist/webuploader.js'}"></script>
+    <script language="JavaScript"
+            th:src="@{'/webjars/echarts/3.2.3/echarts.js'}"></script>
+</head>
+<body>
+<input type="hidden" th:value="${sid}" id="sidInput">
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br><br>
+<div class="layui-container layui-fluid layui-row">
+    <button type="button" class="layui-btn layui-col-lg-offset5" id="test1">
+        <i class="layui-icon">&#xe67c;</i>导入学生成绩
+    </button>
+</div>
+<script language="JavaScript">
+    $(function () {
+        layui.use('upload', function () {
+            var $upload = layui.upload;
+
+            //执行实例
+            var uploadInst = $upload.render({
+                //绑定元素
+                elem: '#test1',
+                //上传接口
+                url: '/stu/mark/importMark/',
+                //设置上传文件
+                accept: "file",
+                //上传完毕回调
+                done: function (res) {
+                    console.log(res);
+                    if (res.code === 200)  {
+                        window.location.href = "/stu/mark/to/markInfo/get/get";
+                    }
+                },
+                //请求异常回调
+                error: function () {
+
+                }
+            });
+        });
+    });
+</script>
+<div th:insert="~{fragment/header::footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

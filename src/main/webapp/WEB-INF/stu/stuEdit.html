@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+
+    <script language="JavaScript">
+        $(function () {
+            layui.use(["laydate", "form"], function () {
+                var $layDate = layui.laydate;
+                var $form = layui.form;
+
+                //执行一个laydate实例
+                $layDate.render({
+                    elem: '#birthInput', //指定元素
+                });
+
+                $form.verify({
+                    sid: function (value, item) {
+                        if (!new RegExp(/^[\d+]{12,12}$/).test(value)) {
+                            return "学号输入不正确";
+                        }
+                    },
+                    name: function (value, item) {
+                        if (!new RegExp(/^[\u4e00-\u9fa5_a-zA-Z]+$/).test(value)) {
+                            return "姓名只能为中英文，下划线等";
+                        }
+                    },
+                    nation: function (value, item) {
+                        if (value.trim() === "请选择") {
+                            return "国籍必选";
+                        }
+                    },
+                    origin: function (value, item) {
+                        if (!new RegExp(/^[\u4e00-\u9fa5_a-zA-Z0-9]+$/).test(value)) {
+                            return "生源地可以为中文字母数字等";
+                        }
+                    },
+                    idCard: function (value, item) {
+                        if (!new RegExp(/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/).test(value)) {
+                            return "身份证号填写不正确";
+                        }
+                        var idBirth = value.substring(6, 14);
+                        var re = new RegExp("-", "g");
+                        var birth = $("#birthInput").val().replace(re, "");
+                        if (idBirth != birth) {
+                            return "省份证号上的生日与出生年月不一致";
+                        }
+                    },
+                    address: function (value, item) {
+                        if (!new RegExp(/^[\u4e00-\u9fa5_a-zA-Z0-9]+$/).test(value)) {
+                            return "家庭住址可以为中英文数字等";
+                        }
+                    }
+                });
+
+                $form.on("submit(stuEdit)", function (data) {
+                    $.ajax({
+                        url: data.form.action,
+                        type: data.form.method,
+                        data: data.field,
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if (res.code === 400) {
+                                if (res.sid === "sid") {
+                                    $("#sid").text(res.sidField).css("color", "red");
+                                } else {
+                                    $("#sid").text("");
+                                }
+
+                                if (res.name === "name") {
+                                    $("#name").text(res.nameField).css("color", "red");
+                                } else {
+                                    $("#name").text("");
+                                }
+
+                                if (res.origin === "origin") {
+                                    $("#origin").text(res.originField).css("color", "red");
+                                } else {
+                                    $("#origin").text("");
+                                }
+
+                                if (res.idCard === "idCard") {
+                                    $("#idCard").text(res.idCardField).css("color", "red");
+                                } else {
+                                    $("#idCard").text("");
+                                }
+
+                                if (res.address === "address") {
+                                    $("#address").text(res.addressField).css("color", "red");
+                                } else {
+                                    $("#address").text("");
+                                }
+                            }
+                            if (res.code === 200) {
+                                $("#sid").text("");
+                                $("#name").text("");
+                                $("#idCard").text("");
+                                $("#origin").text("");
+                                $("#address").text("");
+                                window.location.href = "/stu/student/to/stuInfo/get";
+                            }
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br><br>
+<div class="layui-container layui-fluid layui-row">
+    <form th:action="@{'/student/stuEdit'}" th:method="post" class="layui-form">
+        <input type="hidden" name="_method" value="put">
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">学号</label>
+            <div class="layui-input-block">
+                <input type="text" name="sid" lay-verify="sid" placeholder="请输入学号"
+                       class="layui-input" th:value="${student.sid}">
+            </div>
+            <span id="sid"></span>
+            <span id="msg"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" lay-verify="name" placeholder="请输入姓名"
+                       class="layui-input" th:value="${student.name}">
+            </div>
+            <span id="name"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="gender" th:value="${student.gender}"
+                       th:title="${student.gender}" th:if="${student.gender} eq '男'" checked>
+                <input type="radio" name="gender" th:value="女" th:title="女" th:if="${student.gender} ne '女'">
+                <input type="radio" name="gender" th:value="男"
+                       th:title="男" th:if="${student.gender} ne '男'">
+                <input type="radio" name="gender" th:value="${student.gender}"
+                       th:title="${student.gender}" th:if="${student.gender} eq '女'" checked>
+            </div>
+            <span id="gender"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">国籍</label>
+            <div class="layui-input-block">
+                <select name="nation" class="layui-select layui-col-lg12" lay-search="" lay-verify="nation">
+                    <option th:text="请选择" selected></option>
+                    <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '中国'"
+                            selected></option>
+                    <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '美国'"
+                            selected></option>
+                    <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '日本'"
+                            selected></option>
+                    <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '韩国'"
+                            selected></option>
+                    <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '俄罗斯'"
+                            selected></option>
+                    <option th:value="中国" th:text="中国" th:if="${student.nation} ne '中国'"></option>
+                    <option th:value="美国" th:text="美国" th:if="${student.nation} ne '美国'"></option>
+                    <option th:value="日本" th:text="日本" th:if="${student.nation} ne '日本'"></option>
+                    <option th:value="韩国" th:text="韩国" th:if="${student.nation} ne '韩国'"></option>
+                    <option th:value="俄罗斯" th:text="俄罗斯" th:if="${student.nation} ne '俄罗斯'"></option>
+                </select>
+            </div>
+            <span id="nation"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">生源地</label>
+            <div class="layui-input-block">
+                <input type="text" name="origin" lay-verify="origin" placeholder="请输入生源地" class="layui-input"
+                       th:value="${student.origin}">
+            </div>
+            <span id="origin"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">出生年月</label>
+            <div class="layui-input-block">
+                <input type="text" name="birth" lay-verify="required" id="birthInput" placeholder="yyyy-MM-dd"
+                       class="layui-input" th:value="${#dates.format(student.birth, 'yyyy-MM-dd')}">
+            </div>
+            <span id="birth"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">身份证号</label>
+            <div class="layui-input-block">
+                <input type="text" name="idCard" lay-verify="idCard" th:value="${student.idCard}" placeholder="请输入身份证号"
+                       class="layui-input">
+            </div>
+            <span id="idCard"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">家庭住址</label>
+            <div class="layui-input-block">
+                <input type="text" name="address" lay-verify="address" th:value="${student.address}" placeholder="请输入家庭住址"
+                       class="layui-input">
+            </div>
+            <span id="address"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">班级</label>
+            <div class="layui-input-block">
+                <select name="clazz.cid">
+                    <option th:text="${clazz.getClazzName()}" th:value="${clazz.getCid()}"
+                            th:each="clazz: ${clazzes}" th:if="${clazz.cid} eq ${student.clazz.cid}" selected></option>
+                    <option th:text="${clazz.getClazzName()}" th:value="${clazz.getCid()}"
+                            th:each="clazz: ${clazzes}" th:if="${clazz.cid} ne ${student.clazz.cid}"></option>
+                </select>
+            </div>
+            <span id="clazz.id"></span>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset3 layui-col-lg4">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="stuEdit">确认</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <a th:href="@{'/student/to/stuInfo/get'}" class="layui-btn layui-btn-normal">返回</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

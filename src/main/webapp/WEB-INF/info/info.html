@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>发布信息</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+    <script language="JavaScript" th:src="@{'/js/date.js'}" charset="utf-8"></script>
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br>
+
+
+<div class="layui-container layui-fluid" id="main"></div>
+<hr style="width: 100%;">
+<div class="layui-col-lg-offset4" id="page"></div>
+<script language="JavaScript" data-th-inline="javascript">
+    $(function () {
+        layui.use(['laypage', "laytpl", "layer"], function () {
+            var $laypage = layui.laypage;
+            var $layer = layui.layer;
+            var total = 0;
+
+            function getTotal() {
+                $.ajax({
+                    url: "/stu/info/total",
+                    type: "post",
+                    async: false,
+                    dataType: "json",
+                    success: function (res) {
+                        total = res.total;
+                    }
+                });
+            }
+
+            getTotal();
+            render(1);
+
+            function render(curr) {
+                $laypage.render({
+                    //注意，这里的 test1 是 ID，不用加 # 号
+                    elem: 'page',
+                    //数据总数，从服务端得到
+                    count: total,
+                    limit: 5,
+                    layout: ["prev", "page", "next", "skip", "count", "refresh"],
+                    curr: curr,
+                    jump: function (obj, first) {
+                        //首次不执行
+                        if (!first) {
+                        }
+                        detail(obj);
+                    }
+                });
+            }
+
+            function detail(obj) {
+                $.ajax({
+                    url: "/stu/info/info",
+                    type: "post",
+                    data: {
+                        curr: obj.curr,
+                        limit: obj.limit
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        console.log(res);
+                        $("#main").empty();
+                        $(res.infos).each(function (index, ele) {
+                            var $ul = $("<ul></ul>");
+                            var $li = $("<li class=\"layui-timeline-item\"></li>");
+                            var $div = $("<div class=\"layui-timeline-content layui-text\"></div>");
+                            var $i = $("<i class=\"layui-icon layui-timeline-axis\">&#xe63f;</i>");
+                            var $h5 = $("<h5></h5>");
+                            var time1 = new Date(ele.infoTime).format("yyyy-MM-dd");
+                            $h5.text(time1);
+                            var $infoDetail = $("<a href=''></a>")
+                            var $edita = $("<a href=''><i class=\"layui-icon\">&#xe642;</i> 编辑</a>")
+                            var $del = $("<a class='delete'><i class=\"layui-icon\">&#xe640;</i> 删除</a>")
+                            $infoDetail.prop("href", "/stu/info/to/detail/" + ele.infoId);
+                            $infoDetail.prop("style", "color: black; font-size: 20px;");
+                            $edita.prop("href", "/stu/info/to/edit/" + ele.infoId);
+                            $edita.prop("style", "color: black; font-size: 15px;");
+                            $del.prop("style", "color: black; font-size: 15px;");
+                            $del.attr("value", ele.infoId);
+                            var userType = [[${session.user.userType}]];
+                            var $rightDiv = $("<div class=\"layui-layout-right\"></div>");
+                            if (userType === '管理员') {
+                                $edita.prop("class", " layui-btn layui-btn-xs layui-btn-radius layui-btn-primary");
+                                $del.prop("class", "layui-btn-danger layui-btn layui-btn-xs layui-btn-radius layui-btn-primary");
+                            } else {
+                                $edita.prop("class", " layui-btn layui-btn-xs layui-btn-radius layui-btn-primary layui-hide");
+                                $del.prop("class", "layui-btn-danger layui-btn layui-btn-xs layui-btn-radius layui-btn-primary layui-hide");
+                            }
+                            $del.on("click", function (index) {
+                                /**
+                                 * 打开一个确认框
+                                 */
+                                var $aTitle = $(index.originalEvent.target).parent().parent().parent().find("a")[0];
+                                $layer.confirm("确认删除 " + $($aTitle).text() + " 吗？",
+                                    {
+                                        icon: 3,
+                                    },
+                                    function (res) {
+                                        $.ajax({
+                                            url: "/stu/info/del/" + $(index.originalEvent.target).attr("value"),
+                                            dataType: "json",
+                                            type: "post",
+                                            data: {
+                                                _method: "delete"
+                                            },
+                                            success: function (result) {
+                                                console.log(result);
+                                                if (result.code === 200) {
+                                                    getTotal();
+                                                    console.log(obj);
+                                                    console.log(total);
+                                                    if (total % obj.limit == 0) {
+                                                        render(obj.curr - 1);
+                                                    }
+                                                    detail(obj);
+                                                }
+                                            }
+                                        });
+                                        $layer.close(res);
+                                    });
+                            });
+                            $infoDetail.text(ele.infoTitle);
+                            $rightDiv.append($edita).append($del);
+                            $div.append($h5).append($infoDetail).append($rightDiv);
+                            $li.append($i).append($div);
+                            $ul.append($li);
+                            $("#main").append($ul);
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

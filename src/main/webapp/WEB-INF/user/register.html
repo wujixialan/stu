@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+    <script language="JavaScript">
+        $(function () {
+            $("#reset").click(function () {
+                $("#userId").text("");
+                $("#username").text("");
+                $("#password").text("");
+                $("#msg").text("");
+            });
+            layui.use(["form", "layer", "laydate"], function () {
+                var $form = layui.form;
+                $form.verify({
+                    userId: function (value, item) {
+                        if (value.trim() === "") {
+                            return "用户 id 不能为空";
+                        }
+                        if (!new RegExp(/^[\d+]{12,12}$/).test(value)) {
+                            return "用户 id 只能为数字且为 12 位";
+                        }
+                    },
+                    username: function (value, item) {
+                        if (!new RegExp(/^[\u4e00-\u9fa5_a-zA-Z]+$/).test(value)) {
+                            return "用户名只能为中英文，下划线等";
+                        }
+                    },
+                    password: function (value, item) {
+                        if (value.trim() === "") {
+                            return "密码不能为空";
+                        }
+                        if (!new RegExp(/^[A-Za-z0-9_-]{6,18}$/).test(value)) {
+                            return "密码必须是 6-18 位，并且是大小写数字下划线等";
+                        }
+                    }
+                });
+                $form.on("submit(register)", function (data) {
+                    $.ajax({
+                        url: data.form.action,
+                        type: data.form.method,
+                        data: data.field,
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if (res.code === 400) {
+                                /**
+                                 * 如果 userId 有错误，显示错误信息。
+                                 */
+                                if (res.userId === "userId") {
+                                    $("#userId").text(res.userIdField).css("color", "red");
+                                } else {
+                                    $("#userId").text("");
+                                }
+                                /**
+                                 * 如果 username 有错误，显示错误信息。
+                                 */
+                                if (res.username === "username") {
+                                    $("#username").text(res.usernameField).css("color", "red");
+                                } else {
+                                    $("#username").text("");
+                                }
+
+                                /**
+                                 * 如果 password 有错误，显示错误信息。
+                                 */
+                                if (res.password === "password") {
+                                    $("#password").text(res.passwordField).css("color", "red");
+                                } else {
+                                    $("#password").text("");
+                                }
+
+                                /**
+                                 * 如果 msg 有错误，显示错误信息。
+                                 */
+                                if (res.msg === "msg") {
+                                    layer.msg(res.msgField, {icon: 3});
+                                }
+                            }
+                            if (res.code === 200) {
+                                $("#userId").text("");
+                                $("#username").text("");
+                                $("#password").text("");
+                                $("#msg").text("");
+                                layer.msg("登录成功",
+                                    {
+                                        icon: 6,
+                                        time: 5000,
+                                    });
+                                window.location.href = "/stu/user/to/login";
+                            }
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br><br><br>
+<div class="layui-container layui-fluid layui-row">
+    <form th:action="@{'/user/register'}" th:method="post" class="layui-form">
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">用户id</label>
+            <div class="layui-input-block">
+                <input type="text" name="userId" lay-verify="userId" placeholder="请输入用户 id" class="layui-input">
+            </div>
+            <span id="userId"></span>
+            <span id="msg"></span>
+        </div>
+
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">用户姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" lay-verify="username" placeholder="请输入用户姓名" class="layui-input">
+            </div>
+            <span id="username"></span>
+        </div>
+
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="password" lay-verify="password" placeholder="请输入密码" class="layui-input">
+            </div>
+            <span id="password"></span>
+        </div>
+
+        <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
+            <label class="layui-form-label">用户类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="userType" value="教师" title="教师" checked>
+                <input type="radio" name="userType" value="学生" title="学生">
+                <span data-th-if="${session.user} ne null">
+                    <input type="radio" name="userType" value="管理员" title="管理员" checked>
+                </span>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-col-lg-offset3 layui-col-lg4">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="register">注册</button>
+                <button type="reset" class="layui-btn layui-btn-primary" id="reset">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>发布信息</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+    <script language="JavaScript" th:src="@{'/webjars/ckeditor/4.9.1/standard/ckeditor.js'}" charset="utf-8"></script>
+
+    <script language="JavaScript">
+        $(function () {
+            layui.use(["laydate", "form"], function () {
+                var $form = layui.form;
+                $form.on("submit(infoAdd)", function (data) {
+                    data.field.infoContent = CKEDITOR.instances.editor.getData();
+                    console.log(data.field.infoContent);
+                    $.ajax({
+                        url: data.form.action,
+                        type: data.form.method,
+                        data: data.field,
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if (res.code === 200) {
+                                window.location.href = "/stu/info/to/info/get";
+                            }
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br>
+<div class="layui-container layui-fluid layui-row">
+    <form th:action="@{'/info/add'}" th:method="post" class="layui-form">
+        <div class="layui-form-item layui-col-lg-offset1 layui-col-lg10 layui-form-pane">
+            <label class="layui-form-label">发布标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="infoTitle" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset1 layui-col-lg10 layui-form-pane">
+            <label class="layui-form-label">公开类别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="infoType" placeholder="请输入标题" class="layui-input" th:title="主动公开"
+                       th:value="主动公开" checked>
+                <!--<input type="radio" name="infoType" placeholder="请输入标题" class="layui-input" th:title="公开" th:value="公开">-->
+            </div>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset1 layui-col-lg10 layui-form-pane">
+            <textarea id="editor" name="infoContent" width="100%"></textarea>
+        </div>
+        <div class="layui-form-item layui-col-lg-offset3 layui-col-lg4">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="infoAdd">发布</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript">
+    CKEDITOR.replace("editor"); // 指定textarea的id或name
+</script>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

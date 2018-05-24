@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+    <script language="JavaScript"
+            th:src="@{'/webjars/echarts/3.2.3/echarts.js'}"></script>
+</head>
+<body>
+<input type="hidden" th:value="${sid}" id="sidInput">
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br><br>
+<div class="layui-container layui-fluid layui-row">
+    <div class="layui-col-lg-offset3">
+        <div class="layui-row layui-inline layui-form-pane">
+            <label class="layui-form-label">学号</label>
+            <input class="layui-form-label" style="width: 200px;" id="sid" type="text" readonly>
+            <label class="layui-form-label">姓名</label>
+            <label class="layui-form-label" id="name"></label>
+        </div>
+        <div class="layui-row layui-form-pane">
+            <label class="layui-form-label">班级</label>
+            <label class="layui-form-label" id="clazzName" style="width: 200px;"></label>
+            <label class="layui-form-label">排名</label>
+            <label class="layui-form-label" id="index"></label>
+        </div>
+    </div>
+    <br>
+    <div id="echart" style="width: 600px;height:400px;" class="layui-col-lg-offset3"></div>
+    <div class="layui-form-item layui-col-lg-offset3 layui-col-lg5">
+        <div class="layui-input-block">
+            <a class="layui-btn" th:href="@{'/mark/to/markDetail/' + ${subjectId} + '/' + ${sid}}">返回</a>
+        </div>
+    </div>
+</div>
+
+<script language="JavaScript">
+    $(function () {
+        var myChart = echarts.init($("#echart")[0]);
+        var data = "";
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '学生表现'
+            },
+            tooltip: {},
+            xAxis: {
+                data: ["平均成绩", "挂科数目", "总学分", "平均绩点"]
+            },
+            yAxis: {},
+            series: [{
+                name: '学习',
+                type: 'bar',
+                data: []
+            }]
+        };
+        myChart.setOption(option);
+        $.ajax({
+            url: "/stu/mark/analysis/" + $("#sidInput").val(),
+            dataType: "json",
+            success: function (res) {
+                data = [res.model.score, res.model.hang, res.model.credit, res.model.gpa];
+                $("#sid").val(res.result.stuNo);
+                $("#name").text(res.result.stuName);
+                $("#clazzName").html(res.result.clazzName);
+                $("#index").html("第" + res.result.index + "名");
+                myChart.setOption({
+                    series: [{
+                        name: '学习',
+                        data: data
+                    }]
+                });
+            }
+        });
+
+    });
+</script>
+<div th:insert="~{fragment/header::footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

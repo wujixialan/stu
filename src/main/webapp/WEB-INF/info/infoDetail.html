@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>发布信息</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br>
+<div class="layui-container layui-fluid layui-row">
+    <div class="layui-row layui-col-lg-offset5">
+        <h1 th:utext="${info.infoTitle}"></h1>
+    </div>
+    <br>
+    <div class="layui-row layui-col-lg-offset3">
+        <div class="layui-col-space10">
+            <span th:utext="'发布时间：' + ${#dates.format(info.infoTime, 'yyyy-MM-dd')}"></span>
+            <span th:utext="'公开类别：' + ${info.infoType}"></span>
+            <span th:utext="'发布者：' + ${info.user.username}"></span>
+        </div>
+    </div>
+    <hr>
+    <div class="layui-row">
+        <div th:utext="${info.infoContent}"></div>
+    </div>
+    <hr>
+    <div class="layui-row layui-col-lg-offset5">
+        <a class="layui-btn layui-btn-normal" th:href="@{'/info/to/info/get'}">返回</a>
+    </div>
+</div>
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

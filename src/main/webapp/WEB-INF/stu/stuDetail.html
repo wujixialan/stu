@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+
+<br><br>
+<div class="layui-container layui-fluid layui-row">
+    <table class="layui-table">
+        <tr>
+            <td th:text="学号"></td>
+            <td th:text="${student.getSid()}"></td>
+            <td th:text="姓名"></td>
+            <td th:text="${student.getName()}"></td>
+            <td th:text="身份证号"></td>
+            <td th:text="${student.getIdCard()}" colspan="2"></td>
+        </tr>
+        <tr>
+            <td th:text="家庭住址"></td>
+            <td th:text="${student.getAddress()}"></td>
+            <td th:text="性别"></td>
+            <td th:text="${student.getGender()}"></td>
+            <td th:text="出身年月"></td>
+            <td th:text="${#dates.format(student.getBirth(), 'yyyy-MM-dd')}"></td>
+            <td rowspan="3">
+                <img th:src="@{${student.getPhoto()}}">
+            </td>
+        </tr>
+        <tr>
+            <td th:text="学院信息" colspan="6" align="center"></td>
+        </tr>
+        <tr>
+            <td th:text="学院"></td>
+            <td th:text="${student.clazz.getCollege()}"></td>
+            <td th:text="专业">专业</td>
+            <td th:text="${student.clazz.getProfess()}"></td>
+            <td th:text="班级"></td>
+            <td th:text="${student.clazz.getClazzName()}"></td>
+        </tr>
+    </table>
+    <div class="layui-form-item layui-col-lg-offset3 layui-col-lg4">
+        <div class="layui-input-block">
+            <!--<a th:href="@{'/student/to/stuInfo/get'}" class="layui-btn layui-btn-normal">返回</a>-->
+            <a th:href="@{''}" class="layui-btn layui-btn-normal">返回</a>
+        </div>
+    </div>
+</div>
+<div th:insert="~{fragment/header :: footer}"></div>
+<script language="JavaScript">
+    $(function () {
+        console.log(document.referrer);
+        $(".layui-btn").prop("href", document.referrer);
+    });
+</script>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

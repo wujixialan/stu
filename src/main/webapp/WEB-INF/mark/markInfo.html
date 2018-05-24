@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br>
+<div class="demoTable layui-col-lg-offset1">
+    <div class="layui-inline layui-form-pane">
+        <label class="layui-form-label">学生学号：</label>
+        <div class="layui-inline">
+            <input class="layui-input layui-col-lg6 layui-form-pane" name="sid"
+                   id="sidSearch" autocomplete="on">
+        </div>
+    </div>
+    <div class="layui-inline layui-form-pane">
+        <label class="layui-form-label">学科名称：</label>
+        <div class="layui-inline">
+            <input class="layui-input layui-col-lg6 layui-form-pane" name="subjectName" id="subjectName"
+                   lay-verify="number" autocomplete="on">
+        </div>
+    </div>
+    <div class="layui-inline layui-form-pane">
+        <label class="layui-form-label">班级</label>
+        <div class="layui-inline">
+            <select name="review" id="reviewSearch" class="layui-select" style="width: 120px;">
+                <option th:value="-1">请选择</option>
+                <option th:value="0">待审核</option>
+                <option th:value="1">审核中</option>
+                <option th:value="2">审核完成无误</option>
+            </select>
+        </div>
+
+    </div>
+    <button class="layui-btn" data-type="reload">
+        <i class="layui-icon layui-icon-search"></i>搜索
+    </button>
+</div>
+<table id="mark" lay-filter="mark"></table>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-radius" lay-event="detail">
+        <i class="layui-icon">&#xe705;</i> 查看</a>
+
+    <a class="layui-btn layui-btn-xs layui-btn-radius" lay-event="edit" th:if="${session.user.userType} ne '学生'">
+        <i class="layui-icon">&#xe642;</i> 编辑</a>
+
+    <a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="review"
+       th:if="${session.user.userType} ne '学生'">
+        <i class="layui-icon">&#xe640;</i>审核</a>
+
+    <a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="review"
+       th:if="${session.user.userType} eq '学生'">
+        <i class="layui-icon">&#xe640;</i>审请</a>
+
+    <a class="layui-btn layui-btn-danger layui-btn-radius layui-btn-xs" lay-event="del"
+       th:if="${session.user.userType} ne '学生'">
+        <i class="layui-icon">&#xe640;</i>删除</a>
+
+
+</script>
+
+<script th:inline="none" language="JavaScript">
+    $(function () {
+        layui.use(["table", "util", "layer", "laytpl"], function () {
+            var $table = layui.table;
+            var $utils = layui.util;
+            var $layer = layui.layer;
+            var $laytpl = layui.laytpl;
+            var $ = layui.$, active = {
+                reload: function () {
+                    var demoReload = $('#demoReload');
+                    $table.reload('mark', {
+                        where: {
+                            sid: $("#sidSearch").val(),
+                            subjectName: $("#subjectName").val(),
+                            review: $("#reviewSearch").val(),
+                        },
+                        page: true,
+                    });
+                }
+            };
+
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+            $("#sidSearch").change(function () {
+                $(".demoTable .layui-btn").click();
+            });
+            $("#subjectName").change(function () {
+                $(".demoTable .layui-btn").click();
+            });
+            $("#reviewSearch").change(function () {
+                $(".demoTable .layui-btn").click();
+            });
+            //第一个实例
+            $table.render({
+                elem: '#mark',
+                height: 471,
+                //数据接口,
+                url: '/stu/mark/markInfo',
+                method: "post",
+                //开启分页
+                page: true,
+                //表头
+                cols: [[
+                    {field: 'sid', title: '学号', templet: '#sid', align: 'center', width: 150},
+                    {field: 'name', title: '姓名', align: 'center', templet: "#name", width: 100},
+                    {field: 'subjectId', title: '课程编号', align: 'center', width: 100},
+                    {field: 'subjectName', title: '课程名称', align: 'center', width: 100},
+                    {field: 'team', title: '学期', align: 'center', width: 180},
+                    {field: 'score', title: '成绩', align: 'center', width: 100},
+                    {field: 'credit', title: '学分', align: 'center', width: 90},
+                    {field: 'gpa', title: '绩点', align: 'center', width: 90},
+                    {field: 'review', title: '审核', align: 'center', width: 128, templet: "#review"},
+                    {field: 'right', title: '操作', toolbar: "#barDemo", align: 'center', width: 300}
+                ]],
+                where: {
+                    subjectName: $("#subjectName").val(),
+                    sid: $("#sidSearch").val(),
+                    review: $("#reviewSearch").val(),
+                },
+            });
+
+            $table.on("tool(mark)", function (obj) {
+                console.log(obj);
+                if (obj.event === "detail") {
+                    window.location.href = "/stu/mark/to/markDetail/" + obj.data.subjectId + "/" + obj.data.student.sid;
+                }
+
+                if (obj.event === "edit") {
+                    console.log(obj.data.student.sid);
+                    window.location.href = "/stu/mark/to/markEdit/" + obj.data.markId + "/" + obj.data.student.sid;
+                }
+
+                if (obj.event === "del") {
+                    $layer.confirm("确认删除 " + obj.data.student.name + "的" + obj.data.subjectName + " 的成绩吗？",
+                        {
+                            icon: 3,
+                        },
+                        function (res) {
+                            $.ajax({
+                                url: "/stu/mark/del/" + obj.data.markId,
+                                type: "post",
+                                data: {
+                                    _method: "delete"
+                                },
+                                success: function (res) {
+                                    if (res.code === 200) {
+                                        $('.demoTable .layui-btn').click();
+                                    }
+                                }
+                            });
+                            $layer.close(res);
+                        }
+                    );
+
+                }
+
+                if (obj.event === "review") {
+                    var url = "/stu/mark/review/" + obj.data.markId + "/" + obj.data.student.sid;
+                    var session = $("#session").val();
+                    var title = "", reviewInt = 0;
+                    if (session === "管理员" || session === "教师") {
+                        reviewInt = 2;
+                        title = "审核";
+                    }
+                    if (session === "学生") {
+                        reviewInt = 1;
+                        title = "审请";
+                    }
+                    console.log(obj.data.review);
+                    if ((session === "管理员" || session === "教师") && obj.data.review === 1) {
+                        confirm(url, title, reviewInt, obj);
+                    }
+                    if ((session === "管理员" || session === "教师") && obj.data.review != 1) {
+                        msg("已经审核过了");
+                    }
+                    if (session === "学生" && obj.data.review === 0) {
+                        confirm(url, title, reviewInt, obj);
+                    }
+                    if (session === "学生" && obj.data.review != 0) {
+                        msg("已经申请过了");
+                    }
+                }
+            });
+
+            /**
+             * 判断显示在数据表格中的审核状态显示。
+             */
+            function review(review) {
+                if (review === 0) {
+                    return "待审核";
+                }
+                if (review === 1) {
+                    return "审核中";
+                }
+                if (review === 2) {
+                    return "审核完成无误";
+                }
+            }
+
+            /**
+             * 提示信息
+             */
+            function msg(content) {
+                $layer.msg(content, {
+                    icon: 1,
+                });
+            }
+
+            /**
+             * 确认是否审核或申请。
+             * @param url：请求地址
+             * @param title：确认框标题
+             * @param reviewInt：审核状态
+             * @param obj
+             */
+            function confirm(url, title, reviewInt, obj) {
+                $layer.confirm("确认" + title + "吗？", {icon: 3, title: title}, function (index) {
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        data: {
+                            reviewContent: reviewInt,
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            var reviewRes = review(res.review);
+                            $(obj.tr[0]).find("td[data-field='review']").children().text(reviewRes);
+                        },
+                        error: function (res) {
+                        }
+                    });
+                    $layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+
+<input type="hidden" class="layui-input" th:value="${session.user.userType}" id="session">
+
+<script th:inline="javascript" type="text/html" id="sid">
+    {{#
+    return d.student.sid;
+    }}
+</script>
+<script th:inline="javascript" type="text/html" id="name">
+    {{#
+    return d.student.name;
+    }}
+</script>
+
+<script th:inline="javascript" type="text/html" id="review">
+    {{#
+    if (d.review === 0) {
+    return "待审核";
+    }
+    if (d.review === 1) {
+    return "审核中";
+    }
+    if (d.review === 2) {
+    return "审核完成无误";
+    }
+    }}
+</script>
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br>
+<div class="demoTable layui-col-lg-offset1">
+    <div class="layui-inline layui-form-pane">
+        <label class="layui-form-label">学生姓名：</label>
+        <div class="layui-inline">
+            <input class="layui-input layui-col-lg6 layui-form-pane" name="stuName"
+                   id="stuName" autocomplete="on">
+        </div>
+    </div>
+    <div class="layui-inline layui-form-pane">
+        <label class="layui-form-label">身份证号：</label>
+        <div class="layui-inline">
+            <input class="layui-input layui-col-lg6 layui-form-pane" name="idCard" id="idCard"
+                   lay-verify="number" autocomplete="on">
+        </div>
+    </div>
+
+    <div class="layui-inline layui-form-pane">
+        <label class="layui-form-label">班级</label>
+        <div class="layui-inline">
+            <select name="clazz.cid" id="cidSearch" class="layui-select" style="width: 120px;">
+                <option th:text="请选择" th:value="请选择"></option>
+                <option th:text="${clazz.getClazzName()}" th:value="${clazz.getCid()}"
+                        th:each="clazz: ${clazzes}"></option>
+            </select>
+        </div>
+
+    </div>
+    <button class="layui-btn" data-type="reload">
+        <i class="layui-icon layui-icon-search"></i>搜索
+    </button>
+</div>
+<table id="stu" lay-filter="stu"></table>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-radius" lay-event="detail">
+        <i class="layui-icon">&#xe705;</i> 查看</a>
+    <a class="layui-btn layui-btn-xs layui-btn-radius" lay-event="edit" th:if="${session.user.userType} eq '管理员'">
+        <i class="layui-icon">&#xe642;</i> 编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius" lay-event="del"
+       th:if="${session.user.userType} eq '管理员'">
+        <i class="layui-icon">&#xe640;</i> 删除</a>
+</script>
+
+<script th:inline="none">
+    $(function () {
+        layui.use(["table", "util", "layer"], function () {
+            var $table = layui.table;
+            var $utils = layui.util;
+            var $layer = layui.layer;
+
+            var $ = layui.$, active = {
+                reload: function () {
+                    var demoReload = $('#demoReload');
+                    $table.reload('stu', {
+                        where: {
+                            name: $("#stuName").val(),
+                            idCard: $("#idCard").val(),
+                            cid: $("#cidSearch").val()
+                        },
+                        page: true,
+                    });
+                }
+            };
+
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+            $("#stuName").change(function () {
+                $('.demoTable .layui-btn').click();
+            });
+            $("#idCard").change(function () {
+                $('.demoTable .layui-btn').click();
+            });
+            $("#cidSearch").change(function () {
+                $('.demoTable .layui-btn').click();
+            });
+
+            //第一个实例
+            $table.render({
+                elem: '#stu',
+                height: 471,
+                //数据接口,
+                url: '/stu/student/stuInfo',
+                //开启分页
+                page: true,
+                method: "post",
+                //表头
+                cols: [[
+                    {field: 'sid', title: '学号', width: 200, align: 'center'},
+                    {field: 'name', title: '姓名', width: 100, align: 'center'},
+                    {field: 'birth', title: '出生年月', type: "date", templet: '#birth', width: 200, align: 'center'},
+                    {field: 'gender', title: '性别', width: 90, align: 'center'},
+                    {field: 'idCard', title: '省份证号', align: 'center', width: 200},
+                    {field: 'address', title: '家庭住址', align: 'center', width: 200,},
+                    {field: 'clazz.cid', title: '班级编号&nbsp;', templet: "#cid", align: 'center', width: 200,},
+                    {field: 'right', title: '操作', toolbar: "#barDemo", align: 'center', width: 260}
+                ]],
+                limit: 10,
+                where: {
+                    name: $("#stuName").val(),
+                    idCard: $("#idCard").val(),
+                    cid: $("#cidSearch").val()
+                },
+                done: function (val) {
+                    console.log(val);
+                }
+            });
+
+            $table.on("tool(stu)", function (obj) {
+                console.log(obj);
+                if (obj.event === "detail") {
+                    window.location.href = "/stu/student/to/stuDetail/" + obj.data.sid;
+                }
+
+                if (obj.event === "edit") {
+                    window.location.href = "/stu/student/to/stuEdit/" + obj.data.sid;
+                }
+
+                if (obj.event === "del") {
+                    $layer.confirm("确认删除 " + obj.data.name + " 吗？",
+                        {
+                            icon: 3,
+                        },
+                        function (res) {
+                            $.ajax({
+                                url: "/stu/student/del/" + obj.data.sid,
+                                type: "post",
+                                data: {
+                                    _method: "delete"
+                                },
+                                success: function (res) {
+                                    if (res.code === 200) {
+                                        $('.demoTable .layui-btn').click();
+                                    }
+                                }
+                            });
+                            $layer.close(res);
+                        }
+                    );
+
+                }
+            });
+        });
+    });
+</script>
+
+<script th:inline="javascript" type="text/html" id="birth">
+    {{#
+    return layui.util.toDateString(d.birth.time, 'yyyy-MM-dd')
+    }}
+</script>
+
+<script th:inline="javascript" type="text/html" id="cid">
+    {{#
+    return d.clazz.clazzName;
+    }}
+</script>
+
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+</html>
