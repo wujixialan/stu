@@ -2,7 +2,6 @@ package com.stu.dao;
 
 import com.stu.analysis.MarkResult;
 import com.stu.entity.Mark;
-import com.stu.entity.Review;
 import com.stu.entity.User;
 
 import java.util.List;
@@ -26,8 +25,6 @@ public interface MarkDao {
     public void delMarks(List<Mark> marks);
 
     public void delMark(Mark mark);
-
-    public void review(Review review);
 
     public void updateReview(Mark mark);
 }

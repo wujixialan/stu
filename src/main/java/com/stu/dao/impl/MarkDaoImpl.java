@@ -3,7 +3,6 @@ package com.stu.dao.impl;
 import com.stu.analysis.MarkResult;
 import com.stu.dao.MarkDao;
 import com.stu.entity.Mark;
-import com.stu.entity.Review;
 import com.stu.entity.User;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
@@ -37,8 +36,8 @@ public class MarkDaoImpl extends BaseDaoImpl implements MarkDao {
         if (mark.getStudent().getSid() != null || !mark.getStudent().getSid().trim().equals("")) {
             criteria.add(Restrictions.like("student.sid", mark.getStudent().getSid(), MatchMode.ANYWHERE));
         }
-        if (mark.getReview() != -1) {
-            criteria.add(Restrictions.like("review", mark.getReview()));
+        if (mark.getReviewId() != -1) {
+            criteria.add(Restrictions.like("reviewId", mark.getReviewId()));
         }
         return criteria.setFirstResult(limit * (page - 1))
                 .setMaxResults(limit).list();
@@ -56,8 +55,8 @@ public class MarkDaoImpl extends BaseDaoImpl implements MarkDao {
         if (mark.getStudent().getSid() != null || !mark.getStudent().getSid().trim().equals("")) {
             criteria.add(Restrictions.like("student.sid", mark.getStudent().getSid(), MatchMode.ANYWHERE));
         }
-        if (mark.getReview() != -1) {
-            criteria.add(Restrictions.like("review", mark.getReview()));
+        if (mark.getReviewId() != -1) {
+            criteria.add(Restrictions.like("reviewId", mark.getReviewId()));
         }
         criteria.setProjection(Projections.rowCount());
         return (long) criteria.uniqueResult();
@@ -123,15 +122,10 @@ public class MarkDaoImpl extends BaseDaoImpl implements MarkDao {
     }
 
     @Override
-    public void review(Review review) {
-        getSession().save(review);
-    }
-
-    @Override
     public void updateReview(Mark mark) {
-        String hql = "update Mark m set m.review = :review where m.markId = :markId";
+        String hql = "update Mark m set m.reviewId = :reviewId where m.markId = :markId";
         getSession().createQuery(hql)
-                .setInteger("review", mark.getReview())
+                .setInteger("reviewId", mark.getReviewId())
                 .setString("markId", mark.getMarkId())
                 .executeUpdate();
     }

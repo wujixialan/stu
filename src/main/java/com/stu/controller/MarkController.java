@@ -4,7 +4,6 @@ import com.stu.analysis.MarkAnalysis;
 import com.stu.analysis.MarkAnalysisModel;
 import com.stu.analysis.MarkResult;
 import com.stu.entity.Mark;
-import com.stu.entity.Review;
 import com.stu.entity.Student;
 import com.stu.entity.User;
 import com.stu.excel.ReadMarkExcel;
@@ -84,7 +83,7 @@ public class MarkController {
             return map;
         }
         mark.setMarkId(UUIDUtils.uuid());
-        mark.setReview(0);
+        mark.setReviewId(0);
         markService.markAdd(mark);
         map.put("code", 200);
         return map;
@@ -142,8 +141,8 @@ public class MarkController {
         List<Mark> marks = markService.getMarkBySid(sid);
         MarkAnalysis analysis = new MarkAnalysis();
         MarkAnalysisModel model = analysis.analysis(marks);
-        map.put("model", model);
-        map.put("result", results.get(sid));
+        PagMap.map(map, "model", model);
+        PagMap.map(map, "result", results.get(sid));
         return map;
     }
 
@@ -170,7 +169,7 @@ public class MarkController {
             });
             System.out.println("---" + count.get());
         }
-        map = PagMap.map(map, "code", 200);
+        PagMap.map(map, "code", 200);
         return map;
     }
 
@@ -195,32 +194,15 @@ public class MarkController {
 
     @PostMapping(value = "/review/{markId}/{sid}")
     @ResponseBody
-    public Map<Object, Object> review(@PathVariable String markId, @PathVariable String sid, Review review) {
+    public Map<Object, Object> review(@PathVariable String markId, @PathVariable String sid, Mark mark) {
         Map<Object, Object> map = new HashMap<>();
-        int reviewInt = 0;
-        User user = (User) request.getSession().getAttribute("user");
-        if (user.getUserType().equals("学生")) {
-            reviewInt = 1;
-        }
-        if (user.getUserType().equals("管理员") || user.getUserType().equals("教师")) {
-            reviewInt = 2;
-        }
-        Mark mark = new Mark(markId);
-        mark.setReview(reviewInt);
-        review.setMark(mark);
-        review.setStudent(new Student(sid));
-        String reviewId = UUIDUtils.uuid();
-        review.setReviewId(reviewId);
+        mark.setMarkId(markId);
         try {
-            System.out.println(mark);
-            System.out.println(review);
             markService.updateReview(mark);
-//            markService.review(review);
             PagMap.map(map, "code", 200);
-            PagMap.map(map, "review", reviewInt);
+            PagMap.map(map, "reviewId", mark.getReviewId());
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
             PagMap.map(map, "code", 400);
             return map;
         }

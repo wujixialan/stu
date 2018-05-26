@@ -46,6 +46,9 @@ public class StudentDaoImpl extends BaseDaoImpl implements StudentDao {
         if (!student.getClazz().getCid().equals("请选择")) {
             criteria.add(Restrictions.or(Restrictions.eq("clazz.cid", student.getClazz().getCid())));
         }
+        if (student.getReviewId() != -1) {
+            criteria.add(Restrictions.like("reviewId", student.getReviewId()));
+        }
         criteria.setProjection(Projections.rowCount());
         return (Long) criteria.uniqueResult();
     }
@@ -97,6 +100,9 @@ public class StudentDaoImpl extends BaseDaoImpl implements StudentDao {
         }
         if (!student.getClazz().getCid().equals("请选择")) {
             criteria.add(Restrictions.or(Restrictions.eq("clazz.cid", student.getClazz().getCid())));
+        }
+        if (student.getReviewId() != -1) {
+            criteria.add(Restrictions.like("reviewId", student.getReviewId()));
         }
         return criteria.setFirstResult(limit * (page - 1))
                 .setMaxResults(limit).list();

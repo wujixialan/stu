@@ -90,7 +90,8 @@
                         where: {
                             name: $("#stuName").val(),
                             idCard: $("#idCard").val(),
-                            cid: $("#cidSearch").val()
+                            cid: $("#cidSearch").val(),
+                            reviewId: $("#reviewSearch").val(),
                         },
                         page: true,
                     });
@@ -110,6 +111,9 @@
             $("#cidSearch").change(function () {
                 $('.demoTable .layui-btn').click();
             });
+            $("#reviewSearch").change(function () {
+                $(".demoTable .layui-btn").click();
+            });
 
             //第一个实例
             $table.render({
@@ -128,7 +132,7 @@
                     {field: 'gender', title: '性别', width: 70, align: 'center'},
                     {field: 'idCard', title: '省份证号', align: 'center', width: 180},
                     {field: 'address', title: '家庭住址', align: 'center', width: 180,},
-                    {field: 'review', title: '审核状态', align: 'center', width: 120, templet: "#reviewId"},
+                    {field: 'reviewId', title: '审核状态', align: 'center', width: 120, templet: "#reviewId"},
                     {field: 'reviewContent', title: '审核内容', align: 'center', width: 120,},
                     {field: 'clazz.cid', title: '班级编号&nbsp;', templet: "#cid", align: 'center', width: 200,},
                     {field: 'right', title: '操作', toolbar: "#barDemo", align: 'center', width: 298}
@@ -137,7 +141,8 @@
                 where: {
                     name: $("#stuName").val(),
                     idCard: $("#idCard").val(),
-                    cid: $("#cidSearch").val()
+                    cid: $("#cidSearch").val(),
+                    reviewId: $("#reviewSearch").val(),
                 },
                 done: function (val) {
                     $("[data-field='reviewContent']").css("display", "none");
@@ -212,7 +217,7 @@
                                     icon: 3, title: title
                                 },
                                 function (index) {
-                                    confirm(url, title, reviewInt, "", obj);
+                                    confirmSubmit(url, title, reviewInt, "", obj);
                                     $layer.close(index);
                                 });
                         }
@@ -224,7 +229,7 @@
                                 formType: 2,
                                 title: '申核',
                             }, function (value, index, elem) {
-                                confirm(url, title, reviewInt, value, obj);
+                                confirmSubmit(url, title, reviewInt, value, obj);
                                 $layer.close(index);
                             });
                         }
@@ -234,10 +239,6 @@
                     }
                 }
             );
-            $("#stu tr>td").hover(function (index) {
-                $layer.msg("sss");
-                alert("ddd");
-            });
         });
     });
 </script>

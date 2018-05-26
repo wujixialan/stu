@@ -9,14 +9,10 @@
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name="show_sql">false</property>
         <property name="format_sql">false</property>
-        <property name="connection.url">jdbc:mariadb://localhost:3306/stu</property>
-        <property name="connection.driver_class">org.mariadb.jdbc.Driver</property>
         <mapping resource="com/stu/entity/Clazz.hbm.xml"></mapping>
         <mapping resource="com/stu/entity/Student.hbm.xml"></mapping>
         <mapping resource="com/stu/entity/Mark.hbm.xml"/>
         <mapping resource="com/stu/entity/User.hbm.xml"/>
-        <mapping resource="com/stu/entity/Book.hbm.xml"/>
         <mapping resource="com/stu/entity/Info.hbm.xml"/>
-        <mapping resource="com/stu/entity/Review.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

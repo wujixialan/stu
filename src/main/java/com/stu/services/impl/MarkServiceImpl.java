@@ -3,7 +3,6 @@ package com.stu.services.impl;
 import com.stu.analysis.MarkResult;
 import com.stu.dao.MarkDao;
 import com.stu.entity.Mark;
-import com.stu.entity.Review;
 import com.stu.entity.User;
 import com.stu.services.MarkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class MarkServiceImpl implements MarkService {
      *
      * @return
      * @param user
-     * @param pageSize
+     * @param page
      * @param limit
      * @param mark
      */
@@ -46,8 +45,6 @@ public class MarkServiceImpl implements MarkService {
      *
      * @return
      * @param user
-     * @param pageSize
-     * @param limit
      * @param mark
      */
     @Override
@@ -110,7 +107,7 @@ public class MarkServiceImpl implements MarkService {
     /**
      * 根据 sid 删除 Mark。
      *
-     * @param sid
+     * @param marks
      */
     @Override
     public void delMarks(List<Mark> marks) {
@@ -127,16 +124,6 @@ public class MarkServiceImpl implements MarkService {
         markDao.delMark(mark);
     }
 
-    /**
-     * 学生可以通过申请，让教师对自己的成绩进一步审核，看是否有填写错误的情况。
-     *
-     * @param markId ：学生成绩 id
-     * @param sid    ：学号
-     */
-    @Override
-    public void review(Review review) {
-        markDao.review(review);
-    }
 
     /**
      * 更新审核状态

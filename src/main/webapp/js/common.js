@@ -27,9 +27,10 @@ function msg($layer, content) {
  * @param url：请求地址
  * @param title：确认框标题
  * @param reviewInt：申核状态
+ * @param value: 申核内容
  * @param obj
  */
-function confirm(url, title, reviewInt, value, obj) {
+function confirmSubmit(url, title, reviewInt, value, obj) {
     $.ajax({
         url: url,
         type: "post",
@@ -40,8 +41,8 @@ function confirm(url, title, reviewInt, value, obj) {
         dataType: "json",
         success: function (res) {
             console.log(res);
-            var reviewRes = review(res.review);
-            $(obj.tr[0]).find("td[data-field='review']").children().text(reviewRes);
+            var reviewRes = review(res.reviewId);
+            $(obj.tr[0]).find("td[data-field='reviewId']").children().text(reviewRes);
         },
         error: function (res) {
         }

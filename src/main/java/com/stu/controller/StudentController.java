@@ -126,17 +126,17 @@ public class StudentController {
             map = validateService.validateStudent(br);
             return map;
         } else {
+            student.setReviewContent("学生未审核");
+            student.setReviewId(0);
             boolean flag = studentService.isSid(student);
             if (flag) {
                 studentService.stuAdd(student);
-                System.out.println(student);
-                map.put("code", 200);
+                PagMap.map(map, "code", 200);
                 return map;
             } else {
-                map.put("code", 400);
-                map.put("code", 400);
-                map.put("msg", "msg");
-                map.put("msgField", "该用户已经注册");
+                PagMap.map(map, "code", 400);
+                PagMap.map(map, "msg", "msg");
+                PagMap.map(map, "msgField", "该用户已经注册");
                 return map;
             }
         }
@@ -146,7 +146,6 @@ public class StudentController {
     @ResponseBody
     public Map<Object, Object> stuEdit(@Valid Student student, BindingResult br) {
         Map<Object, Object> map = new HashMap<>();
-
         if (br.hasFieldErrors()) {
             /**
              * 如果有错误，进入 validate() 方法进行验证。
@@ -175,7 +174,7 @@ public class StudentController {
                 studentService.stuAdd(ele);
             });
         }
-        map = PagMap.map(map, "code", 200);
+        PagMap.map(map, "code", 200);
         return map;
     }
 
@@ -207,13 +206,14 @@ public class StudentController {
     @ResponseBody
     public Map<Object, Object> review(@PathVariable String sid, Student student) {
         Map<Object, Object> map = new HashMap<>();
+        student.setSid(sid);
+        System.out.println(student);
         try {
             studentService.updateReview(student);
             PagMap.map(map, "code", 200);
-            PagMap.map(map, "review", student.getReviewId());
+            PagMap.map(map, "reviewId", student.getReviewId());
             return map;
         } catch (Exception e) {
-            e.printStackTrace();
             PagMap.map(map, "code", 400);
             return map;
         }

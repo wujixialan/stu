@@ -9,7 +9,6 @@
     <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
     <script language="JavaScript" th:src="@{'/js/common.js'}" charset="utf-8"></script>
 
-
 </head>
 <body>
 <ul th:insert="~{fragment/header :: top}"></ul>
@@ -82,7 +81,7 @@
                         where: {
                             sid: $("#sidSearch").val(),
                             subjectName: $("#subjectName").val(),
-                            review: $("#reviewSearch").val(),
+                            reviewId: $("#reviewSearch").val(),
                         },
                         page: true,
                     });
@@ -121,13 +120,13 @@
                     {field: 'score', title: '成绩', align: 'center', width: 100},
                     {field: 'credit', title: '学分', align: 'center', width: 90},
                     {field: 'gpa', title: '绩点', align: 'center', width: 90},
-                    {field: 'review', title: '审核', align: 'center', width: 128, templet: "#review"},
+                    {field: 'reviewId', title: '审核', align: 'center', width: 128, templet: "#reviewId"},
                     {field: 'right', title: '操作', toolbar: "#barDemo", align: 'center', width: 300}
                 ]],
                 where: {
                     subjectName: $("#subjectName").val(),
                     sid: $("#sidSearch").val(),
-                    review: $("#reviewSearch").val(),
+                    reviewId: $("#reviewSearch").val(),
                 },
             });
 
@@ -178,24 +177,24 @@
                         reviewInt = 1;
                         title = "申请";
                     }
-                    console.log(obj.data.review);
-                    if ((session === "管理员" || session === "教师") && obj.data.review === 1) {
+                    if ((session === "管理员" || session === "教师") && obj.data.reviewId === 1) {
                         $layer.confirm("确认" + title + "吗？", {icon: 3, title: title}, function (index) {
-                            confirm(url, title, reviewInt, obj);
+                            confirmSubmit(url, title, reviewInt, "", obj);
                             $layer.close(index);
                         });
                     }
-                    if ((session === "管理员" || session === "教师") && obj.data.review != 1) {
+                    if ((session === "管理员" || session === "教师") && obj.data.reviewId != 1) {
                         msg($layer, "已经申核过了");
                     }
-                    if (session === "学生" && obj.data.review === 0) {
+                    if (session === "学生" && obj.data.reviewId === 0) {
                         $layer.confirm("确认" + title + "吗？", {icon: 3, title: title}, function (index) {
-                            confirm(url, title, reviewInt, "", obj);
+                            confirmSubmit(url, title, reviewInt, "", obj);
                             $layer.close(index);
                         });
                     }
-                    if (session === "学生" && obj.data.review != 0) {
+                    if (session === "学生" && obj.data.reviewId != 0) {
                         msg($layer, "已经申请过了");
+                        alert("sss");
                     }
                 }
             });
@@ -216,15 +215,15 @@
     }}
 </script>
 
-<script th:inline="javascript" type="text/html" id="review">
+<script th:inline="javascript" type="text/html" id="reviewId">
     {{#
-    if (d.review === 0) {
+    if (d.reviewId === 0) {
     return "待申核";
     }
-    if (d.review === 1) {
+    if (d.reviewId === 1) {
     return "申核中";
     }
-    if (d.review === 2) {
+    if (d.reviewId === 2) {
     return "申核完成无误";
     }
     }}

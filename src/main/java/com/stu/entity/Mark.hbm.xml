@@ -23,8 +23,8 @@
         <property name="study">
             <column name="study" sql-type="varchar(10)" length="10" not-null="true"/>
         </property>
-        <property name="review">
-            <column name="review" sql-type="int(11)" not-null="true"/>
+        <property name="reviewId">
+            <column name="review_id" sql-type="int(11)" not-null="true"/>
         </property>
         <property name="subjectType">
             <column name="subject_type" sql-type="varchar(10)" length="10" not-null="true"/>

@@ -50,8 +50,8 @@ public class InfoController {
         Map<Object, Object> map = new HashMap<>();
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            map.put("code", 400);
-            map.put("msg", "用户未登录，请重新登录");
+            PagMap.map(map, "code", 400);
+            PagMap.map(map, "msg", "用户未登录，请重新登录");
             return map;
         } else {
             String infoId = UUID.randomUUID().toString().replace("-", "");
@@ -59,7 +59,7 @@ public class InfoController {
             info.setInfoTime(new Date());
             info.setUser(user);
             infoService.add(info);
-            map.put("code", 200);
+            PagMap.map(map, "code", 200);
             return map;
         }
     }
@@ -70,12 +70,12 @@ public class InfoController {
         Map<Object, Object> map = new HashMap<>();
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            map.put("code", 400);
-            map.put("msg", "用户未登录，请重新登录");
+            PagMap.map(map, "code", 400);
+            PagMap.map(map, "msg", "用户未登录，请重新登录");
             return map;
         } else {
             infoService.edit(info);
-            map.put("code", 200);
+            PagMap.map(map, "code", 200);
             return map;
         }
     }
@@ -85,7 +85,7 @@ public class InfoController {
     public Map<Object, Object> info(Model model, int curr, int limit) {
         Map<Object, Object> map = new HashMap<>();
         List<Info> infos = infoService.findAllInfo(curr, limit);
-        map.put("infos", infos);
+        PagMap.map(map, "infos", infos);
         return map;
     }
 
@@ -94,7 +94,7 @@ public class InfoController {
     public Map<Object, Object> total() {
         Map<Object, Object> map = new HashMap<>();
         long total = infoService.getTotal();
-        map.put("total", total);
+        PagMap.map(map, "total", total);
         return map;
     }
 

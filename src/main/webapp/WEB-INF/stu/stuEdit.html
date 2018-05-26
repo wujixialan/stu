@@ -103,7 +103,7 @@
                                 $("#idCard").text("");
                                 $("#origin").text("");
                                 $("#address").text("");
-                                window.location.href = "/stu/student/to/stuInfo/get";
+                                // window.location.href = "/stu/student/to/stuInfo/get";
                             }
                         }
                     });
@@ -119,6 +119,8 @@
 <br><br>
 <div class="layui-container layui-fluid layui-row">
     <form th:action="@{'/student/stuEdit'}" th:method="post" class="layui-form">
+        <input type="hidden" class="layui-input" name="reviewId" th:value="${student.reviewId}">
+        <input type="hidden" class="layui-input" name="reviewContent" th:value="${student.reviewContent}">
         <input type="hidden" name="_method" value="put">
         <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
             <label class="layui-form-label">学号</label>

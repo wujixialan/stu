@@ -50,7 +50,7 @@ public class Mark {
     private Double gpa;
 
     private Student student;
-    private Integer review;
+    private Integer reviewId;
 
     @Override
     public String toString() {
@@ -66,7 +66,7 @@ public class Mark {
                 ", credit=" + credit +
                 ", gpa=" + gpa +
                 ", student=" + student +
-                ", review=" + review +
+                ", reviewId=" + reviewId +
                 '}';
     }
 
@@ -180,12 +180,12 @@ public class Mark {
         this.markId = markId;
     }
 
-    public Integer getReview() {
-        return review;
+    public Integer getReviewId() {
+        return reviewId;
     }
 
-    public void setReview(Integer review) {
-        this.review = review;
+    public void setReviewId(Integer reviewId) {
+        this.reviewId = reviewId;
     }
 
     public Mark(String markId) {
