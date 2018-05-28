@@ -5,12 +5,18 @@ import com.stu.entity.User;
 import com.stu.services.InfoService;
 import com.stu.util.AuthorityManager;
 import com.stu.util.PagMap;
+import com.stu.util.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 @Controller
@@ -20,6 +26,8 @@ public class InfoController {
     private HttpServletRequest request;
     @Autowired
     private InfoService infoService;
+    private static String nativePath;
+    private static String serverPath;
 
     @GetMapping(value = "/to/{flag}/{infoId}")
     public String to(@PathVariable String flag, @PathVariable(required = false) String infoId, Model model) {
@@ -114,5 +122,26 @@ public class InfoController {
             return map;
         }
 
+    }
+
+    @RequestMapping(value = "/uploadImg")
+    public String uploadImg(@RequestParam("upload") MultipartFile file,
+                            @RequestParam("CKEditorFuncNum") String CKEditorFuncNum,
+                            HttpServletResponse response
+                            ) throws IOException {
+        PrintWriter out = response.getWriter();
+        String oriName = file.getOriginalFilename();
+        nativePath = request.getServletContext().getRealPath("/") + "image/";
+
+        String fileName = UUIDUtils.uuid();
+        String expandedName = oriName.substring(oriName.lastIndexOf("."));
+        file.transferTo(new File(nativePath + fileName + expandedName));
+        serverPath = request.getContextPath() + "/image/" + fileName + expandedName;
+        System.out.println(serverPath);
+        out.println("<script type=\"text/javascript\">");
+        out.println("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + serverPath +"','')");
+        out.println("</script>");
+        out.close();
+        return null;
     }
 }

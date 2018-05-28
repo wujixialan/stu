@@ -108,7 +108,6 @@ public class MarkController {
         Student student = new Student();
         student.setSid(sid);
         mark.setStudent(student);
-        System.out.println(mark);
         User user = (User) request.getSession().getAttribute("user");
         long total = markService.getMarkTotal(user, mark);
         /**
@@ -167,7 +166,6 @@ public class MarkController {
                     e.printStackTrace();
                 }
             });
-            System.out.println("---" + count.get());
         }
         PagMap.map(map, "code", 200);
         return map;

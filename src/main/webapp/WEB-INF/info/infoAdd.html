@@ -7,7 +7,7 @@
     <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
     <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
     <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
-    <script language="JavaScript" th:src="@{'/webjars/ckeditor/4.9.1/standard/ckeditor.js'}" charset="utf-8"></script>
+    <script language="JavaScript" th:src="@{'/webjars/ckeditor/4.7.3/full/ckeditor.js'}" charset="utf-8"></script>
 
     <script language="JavaScript">
         $(function () {
@@ -69,12 +69,42 @@
 </body>
 <script language="JavaScript">
     // 指定textarea的id或name
-    CKEDITOR.replace('editor'
-        ,
+    CKEDITOR.replace('editor',
         {
+            height: 300,
             language: 'zh-cn',
-            filebrowserImageUploadUrl: '/stu/info/updateImg', //注意此处由于浏览器内核不同，路径有些许不同。
+            filebrowserImageUploadUrl: '/stu/info/uploadImg', //注意此处由于浏览器内核不同，路径有些许不同。
             image_previewText: ' 预览内容，此处设为空',
+            resize_enabled: false,
+            toolbar:
+                [
+                    //加粗     斜体，     下划线      穿过线      下标字        上标字
+                    ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+                    // 数字列表          实体列表            减小缩进    增大缩进
+                    ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+                    //左对 齐             居中对齐          右对齐          两端对齐
+                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                    //超链接  取消超链接 锚点
+                    ['Link', 'Unlink', 'Anchor'],
+                    //图片       表格       水平线           表情符号   特殊字符        分页符
+                    ['Image', 'Table', 'HorizontalRule', "Smiley", 'SpecialChar', 'PageBreak'],
+                    // 样式      格式    字体    字体大小
+                    ['Styles', 'Format', 'Font', 'FontSize'],
+                    //文本颜色     背景颜色
+                    ['TextColor', 'BGColor'],
+                    //打印        拼写检查     即时拼写检查 撤销   重做
+                    ["Print", "SpellChecker", "Scayt", "Undo", "Redo"],
+                ],
+            smiley_path: "/stu/plugins/smiley/images/",
+            smiley_images: [
+                '1.png', 'angel_smile.gif', 'angry_smile.gif',
+                'broken_heart.gif', 'confused_smile.gif', 'cry_smile.gif',
+                'devil_smile.gif', 'embaressed_smile.gif', 'embarrassed_smile.gif',
+                'envelope.gif', 'heart.gif', 'kiss.gif', 'lightbulb.gif', 'omg_smile.gif',
+                'regular_smile.gif', 'sad_smile.gif', 'shades_smile.gif', 'teeth_smile.gif',
+                'thumbs_down.gif', 'thumbs_up.gif', 'tongue_smile.gif', 'tounge_smile.gif',
+                'whatchutalkingabout_smile.gif', 'wink_smile.gif'
+            ],
         }
     );
 </script>
