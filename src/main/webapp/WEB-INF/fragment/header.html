@@ -59,13 +59,13 @@
                 <i class="layui-icon">&#xe654;</i> 评选信息发布</a></dd>
         </dl>
     </li>
-    <!--<li class="layui-nav-item" th:if="${session.user} ne null">-->
-    <!--<a data-th-href="@{'/user/to/authorized'}" th:if="${session.user.userType} eq '管理员'">授权</a>-->
-    <!--</li>-->
-    <li class="layui-nav-item layui-col-lg-offset8"
-        data-th-if="${session.user} eq null"><a th:href="@{'/user/to/register'}">注册</a></li>
-    <li class="layui-nav-item" th:if="${session.user} eq null"><a th:href="@{'/user/to/login'}">登录</a></li>
-    <li class="layui-nav-item layui-col-lg-offset4" th:unless="${session.user} eq null">
+    <li class="layui-nav-item" th:if="${session.user} ne null">
+        <a data-th-href="@{'/user/to/importUser'}" th:if="${session.user.userType} eq '管理员'">导入登录信息</a>
+    </li>
+    <!--<li class="layui-nav-item layui-col-lg-offset8"-->
+        <!--data-th-if="${session.user} eq null"><a th:href="@{'/user/to/register'}">注册</a></li>-->
+    <li class="layui-nav-item layui-col-lg-offset8" th:if="${session.user} eq null"><a th:href="@{'/user/to/login'}">登录</a></li>
+    <li class="layui-nav-item layui-col-lg-offset3" th:unless="${session.user} eq null">
         <a href="javascript:;">
             <i class="layui-icon">&#xe770;</i>
             <span th:text="${session.user.userId}"></span>

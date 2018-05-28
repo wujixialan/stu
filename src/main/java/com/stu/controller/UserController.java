@@ -1,6 +1,7 @@
 package com.stu.controller;
 
 import com.stu.entity.User;
+import com.stu.excel.ReadUserExcel;
 import com.stu.services.UserService;
 import com.stu.services.ValidateService;
 import com.stu.util.AuthorityManager;
@@ -12,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +52,8 @@ public class UserController {
                 return "/user/changePassword";
             } else if (flag.equals("authorized")) {
                 return "user/authorized";
+            }else if (flag.equals("importUser")) {
+                return "user/importUser";
             }
         } else {
             return "/user/login";
@@ -193,5 +199,30 @@ public class UserController {
             return Layui.data((int) total, jsonArray);
         }
         return null;
+    }
+
+    @PostMapping(value = "/importUser")
+    @ResponseBody
+    public Map<Object, Object> importExcel(MultipartFile file) throws IOException {
+        Map<Object, Object> map = new HashMap<>();
+        InputStream in = null;
+        try {
+            if (file != null) {
+    //            得到输入流
+                in = file.getInputStream();
+    //            得到文件的原始名
+                String fileName = file.getOriginalFilename();
+                List<User> users = ReadUserExcel.readXlsx(in);
+                users.stream().forEach(ele -> {
+                    System.out.println(ele);
+                    userService.save(ele);
+                });
+            }
+            PagMap.map(map, "code", 200);
+            return map;
+        } catch (IOException e) {
+            PagMap.map(map, "code", 400);
+            return map;
+        }
     }
 }

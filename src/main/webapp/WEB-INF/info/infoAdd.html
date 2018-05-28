@@ -32,6 +32,7 @@
             });
         });
     </script>
+
 </head>
 <body>
 <ul th:insert="~{fragment/header :: top}"></ul>
@@ -53,7 +54,7 @@
             </div>
         </div>
         <div class="layui-form-item layui-col-lg-offset1 layui-col-lg10 layui-form-pane">
-            <textarea id="editor" name="infoContent" width="100%"></textarea>
+            <textarea id="editor" name="infoContent" class="layui-textarea" width="100%"></textarea>
         </div>
         <div class="layui-form-item layui-col-lg-offset3 layui-col-lg4">
             <div class="layui-input-block">
@@ -67,7 +68,15 @@
 <div th:insert="~{fragment/header :: footer}"></div>
 </body>
 <script language="JavaScript">
-    CKEDITOR.replace("editor"); // 指定textarea的id或name
+    // 指定textarea的id或name
+    CKEDITOR.replace('editor'
+        ,
+        {
+            language: 'zh-cn',
+            filebrowserImageUploadUrl: '/stu/info/updateImg', //注意此处由于浏览器内核不同，路径有些许不同。
+            image_previewText: ' 预览内容，此处设为空',
+        }
+    );
 </script>
 <script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
 </html>

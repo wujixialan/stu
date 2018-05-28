@@ -20,10 +20,10 @@
                 $form.verify({
                     userId: function (value, item) {
                         if (value.trim() === "") {
-                            return "用户 id 不能为空";
+                            return "学号/工号不能为空";
                         }
-                        if (!new RegExp(/^[\d+]{12,12}$/).test(value)) {
-                            return "用户 id 只能为数字且为 12 位";
+                        if (!new RegExp(/^[\d+]{6,12}$/).test(value)) {
+                            return "学号/工号只能为数字且为 6 或 12 位";
                         }
                     },
                     username: function (value, item) {
@@ -136,11 +136,9 @@
         <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
             <label class="layui-form-label">用户类型</label>
             <div class="layui-input-block">
-                <input type="radio" name="userType" value="教师" title="教师" checked>
+                <input type="radio" name="userType" value="管理员" title="管理员" checked>
+                <input type="radio" name="userType" value="教师" title="教师">
                 <input type="radio" name="userType" value="学生" title="学生">
-                <span data-th-if="${session.user} ne null">
-                    <input type="radio" name="userType" value="管理员" title="管理员" checked>
-                </span>
             </div>
         </div>
 

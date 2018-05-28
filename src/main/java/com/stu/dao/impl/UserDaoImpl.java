@@ -2,25 +2,20 @@ package com.stu.dao.impl;
 
 import com.stu.dao.UserDao;
 import com.stu.entity.User;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     @Override
     public User getUser(User user) {
-        Criteria criteria = getSession().createCriteria(User.class);
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", user.getUserId());
-        map.put("password", user.getPassword());
-        map.put("userType", user.getUserType());
-        User user1 = (User) criteria.add(Restrictions.allEq(map)).uniqueResult();
-        return user1;
+        String hql = "from User u where u.userId = :userId and u.password = :password and u.userType = :userType";
+        return (User) getSession().createQuery(hql)
+                .setString("userId", user.getUserId())
+                .setString("password", user.getPassword())
+                .setString("userType", user.getUserType())
+                .uniqueResult();
     }
 
     @Override

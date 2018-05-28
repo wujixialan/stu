@@ -5,14 +5,24 @@ import javax.validation.constraints.Pattern;
 
 public class User {
     @NotBlank
-    @Pattern(regexp = "^[\\d+]{12,12}$", message = "用户 id 只能为数字")
+    @Pattern(regexp = "^[\\d+]{6,12}$", message = "学号/工号只能为数字")
     private String userId;
     @Pattern(regexp = "^[\\u4e00-\\u9fa5_a-zA-Z]+$", message = "用户名只能为中英文，下划线等")
     private String username;
     @NotBlank
-    @Pattern(regexp = "^[A-Za-z0-9_-]{6,18}$", message = "密码必须是 6-18 位，并且是大小写数字下划线等")
+//    @Pattern(regexp = "^[A-Za-z0-9_-]{6,18}$", message = "密码必须是 6-18 位，并且是大小写数字下划线等")
     private String password;
     private String userType;
+
+    private Student student;
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
     public String getUserId() {
         return userId;
@@ -77,6 +87,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", userType='" + userType + '\'' +
+                ", student=" + student +
                 '}';
     }
 }

@@ -147,12 +147,13 @@
                 done: function (val) {
                     $("[data-field='reviewContent']").css("display", "none");
                     $("tbody tr").each(function (trNode, i) {
-                        $(this).find("td:eq(6)").hover(function () {
+                        $(this).find("[data-field='reviewId']").hover(function () {
                             var td = $(this).parent().find("[data-field='reviewContent']")[0];
                             var val = $(td).find("div").text();
                             timer = setTimeout(function () {
                                 $layer.msg(val, {
                                     icon: 5,
+                                    width: 100,
                                 });
                             }, 1000);
                         }, function () {
@@ -217,7 +218,7 @@
                                     icon: 3, title: title
                                 },
                                 function (index) {
-                                    confirmSubmit(url, title, reviewInt, "", obj);
+                                    confirmSubmit(url, title, reviewInt, "申核完成", obj);
                                     $layer.close(index);
                                 });
                         }

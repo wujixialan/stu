@@ -1097,7 +1097,7 @@
       <DataType>varchar(10)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="268" parent="244" name="review">
+    <column id="268" parent="244" name="review_id">
       <Position>7</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
@@ -1311,10 +1311,25 @@
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="305" parent="247" name="PRIMARY">
+    <column id="305" parent="247" name="stu_user_id">
+      <Position>5</Position>
+      <DataType>varchar(60)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="306" parent="247" name="stu_user_id">
+      <ColNames>stu_user_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="307" parent="247" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userId</ColNames>
       <Primary>1</Primary>
     </key>
+    <foreign-key id="308" parent="247" name="stu_user_id">
+      <ColNames>stu_user_id</ColNames>
+      <RefSchemaName>stu</RefSchemaName>
+      <RefTableName>student</RefTableName>
+      <RefColNames>sid</RefColNames>
+    </foreign-key>
   </database-model>
 </dataSource>

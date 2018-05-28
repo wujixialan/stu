@@ -17,7 +17,7 @@
 <br><br>
 <div class="layui-container layui-fluid layui-row">
     <button type="button" class="layui-btn layui-col-lg-offset5" id="test1">
-        <i class="layui-icon">&#xe67c;</i>导入学生信息
+        <i class="layui-icon">&#xe67c;</i>导入登录信息
     </button>
     <button type="button" class="layui-btn " id="upload">
         <i class="layui-icon">&#xe67c;</i>上传
@@ -25,15 +25,16 @@
 </div>
 <script language="JavaScript">
     $(function () {
-        layui.use('upload', function () {
+        layui.use(["upload", "layer"], function () {
             var $upload = layui.upload;
+            var $layer = layui.layer;
 
             //执行实例
             var uploadInst = $upload.render({
                 //绑定元素
                 elem: '#test1',
                 //上传接口
-                url: '/stu/student/importStu/',
+                url: '/stu/user/importUser/',
                 //设置文件不自动上传
                 auto: false,
                 //设置上传文件
@@ -51,13 +52,19 @@
                 //上传完毕回调
                 done: function (res) {
                     console.log(res);
+                    if (res.code === 400) {
+                        $layer.msg("导入失败", {
+                            icon: 1,
+                        });
+                    }
                     if (res.code === 200)  {
-                        window.location.href = "/stu/student/to/stuInfo/get";
+                        $layer.msg("导入成功", {
+                            icon: 1,
+                        });
                     }
                 },
                 //请求异常回调
                 error: function () {
-
                 }
             });
         });

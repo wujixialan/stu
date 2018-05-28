@@ -17,5 +17,8 @@
         <property name="userType">
             <column name="userType" sql-type="varchar(20)" length="20" not-null="true"/>
         </property>
+        <many-to-one name="student" class="com.stu.entity.Student" unique="true" lazy="false">
+            <column name="stu_user_id"></column>
+        </many-to-one>
     </class>
 </hibernate-mapping>

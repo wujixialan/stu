@@ -48,8 +48,7 @@
     </table>
     <div class="layui-form-item layui-col-lg-offset3 layui-col-lg4">
         <div class="layui-input-block">
-            <!--<a th:href="@{'/student/to/stuInfo/get'}" class="layui-btn layui-btn-normal">返回</a>-->
-            <a th:href="@{''}" class="layui-btn layui-btn-normal">返回</a>
+            <a th:href="@{''}" class="layui-btn layui-btn-normal" id="reback">返回</a>
         </div>
     </div>
 </div>
@@ -57,7 +56,7 @@
 <script language="JavaScript">
     $(function () {
         console.log(document.referrer);
-        $(".layui-btn").prop("href", document.referrer);
+        $("#reback").prop("href", document.referrer);
     });
 </script>
 </body>

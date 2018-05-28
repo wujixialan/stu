@@ -18,10 +18,10 @@
                 $form.verify({
                     userId: function (value, item) {
                         if (value.trim() === "") {
-                            return "用户 id 不能为空";
+                            return "学号/工号不能为空";
                         }
-                        if (!new RegExp(/^[\d+]{12,12}$/).test(value)) {
-                            return "用户 id 只能为数字且为 12 位";
+                        if (!new RegExp(/^[\d+]{6,12}$/).test(value)) {
+                            return "学号/工号只能为数字且为 6 或 12 位";
                         }
                     },
                     password: function (value, item) {

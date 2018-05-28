@@ -1,6 +1,6 @@
 package com.stu.util;
 
-import java.util.UUID;
+import cn.hutool.core.util.RandomUtil;
 
 /**
  * Created by zxg on 2018/5/7.
@@ -12,6 +12,7 @@ public class UUIDUtils {
      * @return
      */
     public static String uuid() {
-        return UUID.randomUUID().toString().replace("-", "");
+//        return UUID.randomUUID().toString().replace("-", "");
+        return RandomUtil.simpleUUID();
     }
 }
