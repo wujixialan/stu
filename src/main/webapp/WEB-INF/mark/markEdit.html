@@ -163,7 +163,7 @@
             </div>
             <span id="hang"></span>
         </div>
-        <input type="hidden" class="layui-input" name="review" th:value="${mark.review}">
+        <input type="hidden" class="layui-input" name="reviewId" th:value="${mark.reviewId}">
         <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
             <label class="layui-form-label">初修</label>
             <div class="layui-input-block">
@@ -221,7 +221,6 @@
                 <a class="layui-btn" th:href="@{'/mark/to/markInfo/get/get'}">返回</a>
             </div>
         </div>
-
     </form>
 </div>
 <div th:insert="~{fragment/header :: footer}"></div>

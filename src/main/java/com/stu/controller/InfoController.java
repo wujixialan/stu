@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping(value = "/info")
@@ -110,7 +112,6 @@ public class InfoController {
     @ResponseBody
     public Map<Object, Object> del(@PathVariable String infoId) {
         Map<Object, Object> map = new HashMap<>();
-        System.out.println(infoId);
         Info info = new Info();
         info.setInfoId(infoId);
         try {
@@ -121,7 +122,6 @@ public class InfoController {
             PagMap.map(map, "code", 400);
             return map;
         }
-
     }
 
     @RequestMapping(value = "/uploadImg")
@@ -142,7 +142,6 @@ public class InfoController {
         } else {
             file.transferTo(new File(nativePath + fileName + expandedName));
             serverPath = request.getContextPath() + "/image/" + fileName + expandedName;
-            System.out.println(serverPath);
             out.println("<script type=\"text/javascript\">");
             out.println("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + serverPath +"','')");
             out.println("</script>");
@@ -154,10 +153,9 @@ public class InfoController {
 
     public String validateImage(String expandedName) {
         expandedName = expandedName.trim();
-        if (!expandedName.equals(".jpg")
-                || !expandedName.equals(".jpeg")
-                || !expandedName.equals(".png")
-                || !expandedName.equals("gif")) {
+        Pattern pattern = Pattern.compile("^\\.(gif|jpg|jpeg|png|JPG|PNG)$");
+        Matcher matcher = pattern.matcher(expandedName);
+        if (!matcher.find()) {
             return "只能上传 jpg,jpeg,png,gif 格式图片";
         }
         return null;
