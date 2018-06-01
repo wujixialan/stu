@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -147,15 +146,22 @@ public class MarkController {
 
     @PostMapping(value = "/importMark")
     @ResponseBody
-    public Map<Object, Object> importExcel(MultipartFile file) throws IOException {
+    public Map<Object, Object> importExcel(MultipartFile file) {
         Map<Object, Object> map = new HashMap<>();
         InputStream in = null;
         if (file != null) {
+            List<Mark> marks = null;
+            try {
 //            得到输入流
-            in = file.getInputStream();
+                in = file.getInputStream();
 //            得到文件的原始名
-            String fileName = file.getOriginalFilename();
-            List<Mark> marks = ReadMarkExcel.readXlsx(in);
+                String fileName = file.getOriginalFilename();
+                marks = ReadMarkExcel.readXlsx(in);
+            } catch (Exception e) {
+                PagMap.map(map, "code", 400);
+                PagMap.map(map, "msg", "导入学生成绩失败");
+                return map;
+            }
             AtomicInteger count = new AtomicInteger();
             marks.stream().forEach(ele -> {
                 ele.setMarkId(UUIDUtils.uuid());

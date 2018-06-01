@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -203,24 +202,29 @@ public class UserController {
 
     @PostMapping(value = "/importUser")
     @ResponseBody
-    public Map<Object, Object> importExcel(MultipartFile file) throws IOException {
+    public Map<Object, Object> importExcel(MultipartFile file) {
         Map<Object, Object> map = new HashMap<>();
         InputStream in = null;
         try {
             if (file != null) {
-    //            得到输入流
-                in = file.getInputStream();
-    //            得到文件的原始名
-                String fileName = file.getOriginalFilename();
-                List<User> users = ReadUserExcel.readXlsx(in);
-                users.stream().forEach(ele -> {
-                    System.out.println(ele);
-                    userService.save(ele);
-                });
+                try {
+                    //            得到输入流
+                    in = file.getInputStream();
+                    //            得到文件的原始名
+                    String fileName = file.getOriginalFilename();
+                    List<User> users = ReadUserExcel.readXlsx(in);
+                    users.stream().forEach(ele -> {
+                        userService.save(ele);
+                    });
+                } catch (Exception e) {
+                    PagMap.map(map, "code", 400);
+                    PagMap.map(map, "msg", "导入用户登录信息失败");
+                    return map;
+                }
             }
             PagMap.map(map, "code", 200);
             return map;
-        } catch (IOException e) {
+        } catch (Exception e) {
             PagMap.map(map, "code", 400);
             return map;
         }

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>导入用户登录</title>
     <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
     <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
     <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
@@ -53,8 +53,8 @@
                 done: function (res) {
                     console.log(res);
                     if (res.code === 400) {
-                        $layer.msg("导入失败", {
-                            icon: 1,
+                        $layer.msg(res.msg, {
+                            icon: 5,
                         });
                     }
                     if (res.code === 200)  {

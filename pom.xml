@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -330,19 +329,22 @@
             <version>1.0.5</version>
         </dependency>
 
-        <!--配置recaptcha-->
-        <!-- https://mvnrepository.com/artifact/io.github.keetraxx/recaptcha -->
-        <dependency>
-            <groupId>io.github.keetraxx</groupId>
-            <artifactId>recaptcha</artifactId>
-            <version>0.5</version>
-        </dependency>
         <!--配置各种 Java 工具类-->
         <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>4.0.12</version>
+        </dependency>
+
+
+        <!--配置 editor.md 实现 Markdown-->
+        <!-- https://mvnrepository.com/artifact/org.webjars.bower/editor.md -->
+
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>editor.md</artifactId>
+            <version>1.5.0</version>
         </dependency>
 
 

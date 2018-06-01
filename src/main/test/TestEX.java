@@ -4,6 +4,6 @@
 public class TestEX {
     public static void main(String[] args) {
         String s = "1525960196466.jpeg";
-        System.out.println(s.substring(s.lastIndexOf(".")));
+        System.out.println(s.substring(s.lastIndexOf(".") + 1));
     }
 }

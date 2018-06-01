@@ -25,8 +25,9 @@
 </div>
 <script language="JavaScript">
     $(function () {
-        layui.use('upload', function () {
+        layui.use(["upload", "layer"], function () {
             var $upload = layui.upload;
+            var $layer = layui.layer;
 
             //执行实例
             var uploadInst = $upload.render({
@@ -51,6 +52,11 @@
                 //上传完毕回调
                 done: function (res) {
                     console.log(res);
+                    if (res.code === 400) {
+                        $layer.msg(res.msg, {
+                            icon: 5,
+                        });
+                    }
                     if (res.code === 200)  {
                         window.location.href = "/stu/student/to/stuInfo/get";
                     }

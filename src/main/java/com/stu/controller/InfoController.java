@@ -132,16 +132,34 @@ public class InfoController {
         PrintWriter out = response.getWriter();
         String oriName = file.getOriginalFilename();
         nativePath = request.getServletContext().getRealPath("/") + "image/";
-
         String fileName = UUIDUtils.uuid();
         String expandedName = oriName.substring(oriName.lastIndexOf("."));
-        file.transferTo(new File(nativePath + fileName + expandedName));
-        serverPath = request.getContextPath() + "/image/" + fileName + expandedName;
-        System.out.println(serverPath);
-        out.println("<script type=\"text/javascript\">");
-        out.println("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + serverPath +"','')");
-        out.println("</script>");
+        String flag = validateImage(expandedName);
+        if (flag != null) {
+            out.println("<script type=\"text/javascript\">");
+            out.println("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + flag +"','')");
+            out.println("</script>");
+        } else {
+            file.transferTo(new File(nativePath + fileName + expandedName));
+            serverPath = request.getContextPath() + "/image/" + fileName + expandedName;
+            System.out.println(serverPath);
+            out.println("<script type=\"text/javascript\">");
+            out.println("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + serverPath +"','')");
+            out.println("</script>");
+        }
         out.close();
+        return null;
+    }
+
+
+    public String validateImage(String expandedName) {
+        expandedName = expandedName.trim();
+        if (!expandedName.equals(".jpg")
+                || !expandedName.equals(".jpeg")
+                || !expandedName.equals(".png")
+                || !expandedName.equals("gif")) {
+            return "只能上传 jpg,jpeg,png,gif 格式图片";
+        }
         return null;
     }
 }

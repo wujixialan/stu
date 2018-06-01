@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>学生评优评先系统</title>
     <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
     <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
     <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
@@ -25,8 +25,9 @@
 </div>
 <script language="JavaScript">
     $(function () {
-        layui.use('upload', function () {
+        layui.use(["upload", "layer"], function () {
             var $upload = layui.upload;
+            var $layer = layui.layer;
 
             //执行实例
             var uploadInst = $upload.render({
@@ -51,8 +52,13 @@
                 //上传完毕回调
                 done: function (res) {
                     console.log(res);
+                    if (res.code === 400) {
+                        $layer.msg(res.msg, {
+                            icon: 5,
+                        });
+                    }
                     if (res.code === 200)  {
-                        // window.location.href = "/stu/mark/to/markInfo/get/get";
+                        window.location.href = "/stu/mark/to/markInfo/get/get";
                     }
                 },
                 //请求异常回调

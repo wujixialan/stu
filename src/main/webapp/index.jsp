@@ -8,6 +8,9 @@
 <link rel="stylesheet" href="/webjars/github-com-fex-team-webuploader/0.1.5/dist/webuploader.css">
 <script language="JavaScript"
         src="/webjars/tinymce/4.7.9/tinymce.min.js"></script>
+<script language="JavaScript"
+        src="/webjars/editor.md/1.5.0/editormd.js"></script>
+<link rel="stylesheet" href="/webjars/editor.md/1.5.0/css/editormd.css">
 
 <script language="JavaScript">
     $(function () {
