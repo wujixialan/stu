@@ -33,6 +33,7 @@ public class ReadUserExcel {
                 user.setUserType(userType);
                 if (userType.trim().equals("学生")) {
                     Student student = new Student(user.getUserId());
+                    user.setStudent(student);
                 }
                 user = PwdEncryption.encryption(user);
                 users.add(user);

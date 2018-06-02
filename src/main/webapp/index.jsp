@@ -10,7 +10,7 @@
         src="/webjars/tinymce/4.7.9/tinymce.min.js"></script>
 <script language="JavaScript"
         src="/webjars/editor.md/1.5.0/editormd.js"></script>
-<link rel="stylesheet" href="/webjars/editor.md/1.5.0/css/editormd.css">
+<link rel="stylesheet" href="/webjars/font-awesome/4.7.0/css/font-awesome.css">
 
 <script language="JavaScript">
     $(function () {

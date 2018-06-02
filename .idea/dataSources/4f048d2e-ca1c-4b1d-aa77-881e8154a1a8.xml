@@ -1025,7 +1025,7 @@
     <column id="255" parent="243" name="info_content">
       <Position>3</Position>
       <Comment>信息发布的内容</Comment>
-      <DataType>text|0s</DataType>
+      <DataType>longtext|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="256" parent="243" name="info_time">

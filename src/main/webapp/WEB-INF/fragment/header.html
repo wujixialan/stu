@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>ss</title>
     <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <link rel="stylesheet" th:href="@{'/webjars/font-awesome/4.7.0/css/font-awesome.css'}">
 </head>
 <body class="layui-layout layui-layout-admin">
 
@@ -83,16 +84,19 @@
         </dl>
     </li>
     <li class="layui-nav-item"
-        th:if="${session.user} ne null"><a data-th-if="${session.user.userType} eq '管理员'"
-                                           th:href="@{'/user/to/register'}">注册</a></li>
+        th:if="${session.user} ne null">
+        <a data-th-if="${session.user.userType} eq '管理员'"
+           th:href="@{'/user/to/register'}">
+            <i class="fa fa-registered"></i>
+            注册</a></li>
     <li class="layui-nav-item" th:unless="${session.user} eq null">
-        <a th:text="登出" th:href="@{'/user/signOut'}"></a>
+        <a th:href="@{'/user/signOut'}"><i class="fa fa-sign-out"></i> 登出</a>
     </li>
 </ul>
 
 <div class="layui-footer footer layui-col-lg-offset5" th:fragment="footer">
     <br>
-    © Copyright 2018
+    <i class="fa fa-copyright"></i> Copyright 2018
 </div>
 
 </body>

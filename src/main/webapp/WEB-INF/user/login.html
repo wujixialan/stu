@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>登录</title>
     <link rel="stylesheet" th:href="@{'/webjars/layui/2.3.0/css/layui.css'}">
+    <link rel="stylesheet" th:href="@{'/webjars/font-awesome/4.7.0/css/font-awesome.css'}">
     <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
     <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
     <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
@@ -107,7 +108,7 @@
 <div class="layui-container layui-fluid layui-row">
     <form th:action="@{'/user/login'}" th:method="post" class="layui-form">
         <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
-            <label class="layui-form-label layui-icon layui-icon-user" for="userId"> 学/工号</label>
+            <label class="layui-form-label fa fa-qq" for="userId"> 学/工号</label>
             <div class="layui-input-block">
                 <input type="text" name="userId" lay-verify="userId" placeholder="请输入学号/工号"
                        class="layui-input">
@@ -134,8 +135,10 @@
         </div>
         <div class="layui-form-item layui-col-lg-offset3 layui-col-lg4">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="login">登录</button>
-                <button type="reset" class="layui-btn layui-btn-primary" id="reset">重置</button>
+                <button class="layui-btn" lay-submit lay-filter="login">
+                    <i class="fa fa-sign-in"></i> 登录</button>
+                <button type="reset" class="layui-btn layui-btn-primary" id="reset">
+                    重置</button>
             </div>
         </div>
     </form>
