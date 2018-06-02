@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>test</title>
-    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.3.0/css/layui.css'}">
     <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
     <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
     <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
@@ -50,30 +50,27 @@
             </select>
         </div>
     </div>
-    <button class="layui-btn" data-type="reload">
-        <i class="layui-icon layui-icon-search"></i>搜索
+    <button class="layui-btn layui-icon layui-icon-search" data-type="reload"> 搜索
     </button>
 </div>
 <table id="stu" lay-filter="stu"></table>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs layui-btn-radius" lay-event="detail">
-        <i class="layui-icon">&#xe705;</i> 查看</a>
+    <a class="layui-btn layui-btn-xs layui-btn-radius layui-icon layui-icon-read" lay-event="detail">
+        查看</a>
 
-    <a class="layui-btn layui-btn-xs layui-btn-radius" lay-event="edit" th:if="${session.user.userType} eq '管理员'">
-        <i class="layui-icon">&#xe642;</i> 编辑</a>
-
-    <a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="review"
+    <a class="layui-btn layui-btn-xs layui-btn-radius layui-icon layui-icon-edit" lay-event="edit"
        th:if="${session.user.userType} eq '管理员'">
-        <i class="layui-icon">&#xe640;</i>申核</a>
+        编辑</a>
 
-    <a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="review"
-       th:if="${session.user.userType} eq '学生'">
-        <i class="layui-icon">&#xe640;</i>申请</a>
+    <a class="layui-btn layui-btn-radius layui-btn-xs layui-icon layui-icon-delete" lay-event="review"
+       th:if="${session.user.userType} eq '管理员'">申核</a>
 
-    <a class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius" lay-event="del"
-       th:if="${session.user.userType} eq '管理员'">
-        <i class="layui-icon">&#xe640;</i> 删除</a>
+    <a class="layui-btn layui-btn-radius layui-btn-xs layui-icon layui-icon-delete" lay-event="review"
+       th:if="${session.user.userType} eq '学生'">申请</a>
+
+    <a class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius layui-icon layui-icon-delete" lay-event="del"
+       th:if="${session.user.userType} eq '管理员'">删除</a>
 </script>
 
 <script th:inline="none">
@@ -149,13 +146,15 @@
                     $("tbody tr").each(function (trNode, i) {
                         $(this).find("[data-field='reviewId']").hover(function () {
                             var td = $(this).parent().find("[data-field='reviewContent']")[0];
-                            var val = $(td).find("div").text();
+                            var div = $(td).find("div");
+                            var val = div.text();
                             timer = setTimeout(function () {
                                 $layer.msg(val, {
                                     icon: 5,
                                     width: 100,
                                 });
                             }, 1000);
+
                         }, function () {
                             //这里去clear
                             //如果没停留3秒,直接会被clear掉,如果停留超过3秒,也一样会被clear,但是你要做的方法已经被执行了
@@ -274,5 +273,5 @@
 <input type="hidden" class="layui-input" th:value="${session.user.userType}" id="session">
 <div th:insert="~{fragment/header :: footer}"></div>
 </body>
-<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.3.0/layui.all.js'}" charset="utf-8"></script>
 </html>

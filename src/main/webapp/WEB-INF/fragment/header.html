@@ -16,20 +16,20 @@
         <!-- 二级菜单 -->
         <dl class="layui-nav-child">
             <dd>
-                <a th:href="@{'/student/to/stuInfo/get'}">
-                    <i class="layui-icon">&#xe705; </i> 学生信息查询
+                <a th:href="@{'/student/to/stuInfo/get'}"
+                   class="layui-icon layui-icon-read"> 学生信息查询
                 </a>
             </dd>
             <dd>
                 <a th:href="@{'/student/to/stuAdd/get'}"
-                   data-th-if="${session.user.userType} eq '管理员'">
-                    <i class="layui-icon">&#xe654;</i> 学生信息添加
+                   data-th-if="${session.user.userType} eq '管理员'"
+                   class="layui-icon layui-icon-add-1"> 学生信息添加
                 </a>
             </dd>
             <dd>
                 <a th:href="@{'/student/to/importStu/get'}"
-                   data-th-if="${session.user.userType} eq '管理员'">
-                    <i class="layui-icon">&#xe67c;</i>
+                   data-th-if="${session.user.userType} eq '管理员'"
+                   class="layui-icon layui-icon-upload">
                     <cite>批量导入学生信息</cite>
                 </a>
             </dd>
@@ -39,42 +39,44 @@
         <a href="javascript:;">学生成绩管理</a>
         <!-- 二级菜单 -->
         <dl class="layui-nav-child">
-            <dd><a th:href="@{'/mark/to/markInfo/get/get'}">
-                <i class="layui-icon">&#xe705; </i> 成绩信息查询</a></dd>
+            <dd><a th:href="@{'/mark/to/markInfo/get/get'}"
+                   class="layui-icon layui-icon-read">
+                成绩信息查询</a></dd>
             <dd><a th:href="@{'/mark/to/markAdd/get/get'}"
-                   data-th-if="${session.user.userType} ne '学生'">
-                <i class="layui-icon">&#xe654; </i> 成绩信息添加</a></dd>
+                   data-th-if="${session.user.userType} ne '学生'"
+                   class="layui-icon layui-icon-add-1"> 成绩信息添加
+            </a>
+            </dd>
             <dd><a th:href="@{'/mark/to/importMark/get/get'}"
-                   data-th-if="${session.user.userType} ne '学生'">
-                <i class="layui-icon">&#xe67c;</i> 批量导入成绩</a></dd>
+                   data-th-if="${session.user.userType} ne '学生'"
+                   class="layui-icon layui-icon-upload">
+                批量导入成绩</a></dd>
         </dl>
     </li>
     <li class="layui-nav-item" th:if="${session.user} ne null">
         <a href="javascript:;">评选信息管理</a>
         <!-- 二级菜单 -->
         <dl class="layui-nav-child">
-            <dd><a th:href="@{'/info/to/info/get'}">
-                <i class="layui-icon">&#xe705; </i> 评选信息查询</a></dd>
+            <dd><a th:href="@{'/info/to/info/get'}" class="layui-icon layui-icon-read"> 评选信息查询</a></dd>
             <dd><a th:href="@{'/info/to/infoAdd/get'}"
-                   data-th-if="${session.user.userType} eq '管理员'">
-                <i class="layui-icon">&#xe654;</i> 评选信息发布</a></dd>
+                   data-th-if="${session.user.userType} eq '管理员'" class="layui-icon layui-icon-add-1">
+                评选信息发布</a></dd>
         </dl>
     </li>
     <li class="layui-nav-item" th:if="${session.user} ne null">
         <a data-th-href="@{'/user/to/importUser'}" th:if="${session.user.userType} eq '管理员'">导入登录信息</a>
     </li>
     <!--<li class="layui-nav-item layui-col-lg-offset8"-->
-        <!--data-th-if="${session.user} eq null"><a th:href="@{'/user/to/register'}">注册</a></li>-->
-    <li class="layui-nav-item layui-col-lg-offset8" th:if="${session.user} eq null"><a th:href="@{'/user/to/login'}">登录</a></li>
+    <!--data-th-if="${session.user} eq null"><a th:href="@{'/user/to/register'}">注册</a></li>-->
+    <li class="layui-nav-item layui-col-lg-offset8" th:if="${session.user} eq null"><a
+            th:href="@{'/user/to/login'}">登录</a></li>
     <li class="layui-nav-item layui-col-lg-offset3" th:unless="${session.user} eq null">
-        <a href="javascript:;">
-            <i class="layui-icon">&#xe770;</i>
+        <a href="javascript:;" class="layui-icon layui-icon-user">
             <span th:text="${session.user.userId}"></span>
         </a>
         <dl class="layui-nav-child">
             <dd>
-                <a th:href="@{'/user/to/changePassword'}">
-                    <i class="layui-icon">&#xe716;</i>
+                <a th:href="@{'/user/to/changePassword'}" class="layui-icon layui-icon-set">
                     <span th:text="修改密码"></span>
                 </a>
             </dd>

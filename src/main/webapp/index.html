@@ -7,12 +7,14 @@
     <script language="JavaScript" src="/stu/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
     <script language="JavaScript" src="/stu/webjars/tinymce/4.7.9/tinymce.min.js" charset="utf-8"></script>
     <script language="JavaScript">
-        tinyMCE.init({
-            mode: "textareas"
-        });
+       $(function () {
+           $(this).mousemove(function (e) {
+               $("#test").text(e.pageX + "-" + e.pageY);
+           });
+       });
     </script>
 </head>
 <body>
-<canvas id="myCanvas" width="200" height="100"></canvas>
+<label id="test"></label>
 </body>
 </html>

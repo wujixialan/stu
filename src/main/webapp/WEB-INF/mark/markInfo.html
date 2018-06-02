@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>test</title>
-    <link rel="stylesheet" th:href="@{'/webjars/layui/2.2.6/css/layui.css'}">
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.3.0/css/layui.css'}">
     <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
     <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
     <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
@@ -39,30 +39,25 @@
             </select>
         </div>
     </div>
-    <button class="layui-btn" data-type="reload">
-        <i class="layui-icon layui-icon-search"></i>搜索
+    <button class="layui-btn layui-icon layui-icon-search" data-type="reload"> 搜索
     </button>
 </div>
 <table id="mark" lay-filter="mark"></table>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs layui-btn-radius" lay-event="detail">
-        <i class="layui-icon">&#xe705;</i> 查看</a>
+    <a class="layui-btn layui-btn-xs layui-btn-radius layui-icon layui-icon-read" lay-event="detail"> 查看</a>
 
-    <a class="layui-btn layui-btn-xs layui-btn-radius" lay-event="edit" th:if="${session.user.userType} ne '学生'">
-        <i class="layui-icon">&#xe642;</i> 编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-radius layui-icon layui-icon-edit" lay-event="edit" th:if="${session.user.userType} ne '学生'">
+        编辑</a>
 
-    <a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="review"
-       th:if="${session.user.userType} ne '学生'">
-        <i class="layui-icon">&#xe640;</i>申核</a>
+    <a class="layui-btn layui-btn-radius layui-btn-xs layui-icon layui-icon-delete" lay-event="review"
+       th:if="${session.user.userType} ne '学生'">申核</a>
 
-    <a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="review"
-       th:if="${session.user.userType} eq '学生'">
-        <i class="layui-icon">&#xe640;</i>申请</a>
+    <a class="layui-btn layui-btn-radius layui-btn-xs layui-icon layui-icon-delete" lay-event="review"
+       th:if="${session.user.userType} eq '学生'">申请</a>
 
-    <a class="layui-btn layui-btn-danger layui-btn-radius layui-btn-xs" lay-event="del"
-       th:if="${session.user.userType} ne '学生'">
-        <i class="layui-icon">&#xe640;</i>删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-radius layui-btn-xs layui-icon layui-icon-delete" lay-event="del"
+       th:if="${session.user.userType} ne '学生'">删除</a>
 
 
 </script>
@@ -230,5 +225,5 @@
 </script>
 <div th:insert="~{fragment/header :: footer}"></div>
 </body>
-<script language="JavaScript" th:src="@{'/webjars/layui/2.2.6/layui.all.js'}" charset="utf-8"></script>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.3.0/layui.all.js'}" charset="utf-8"></script>
 </html>
