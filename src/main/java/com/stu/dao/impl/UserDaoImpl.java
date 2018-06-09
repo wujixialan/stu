@@ -3,6 +3,7 @@ package com.stu.dao.impl;
 import com.stu.dao.UserDao;
 import com.stu.entity.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return user1;
     }
 
+    @Transactional
     @Override
     public void save(User user) {
         getSession().save(user);
@@ -58,5 +60,19 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 .setString("userId", user.getUserId())
                 .setString("userType", user.getUserType())
                 .uniqueResult();
+    }
+
+    @Transactional
+    @Override
+    public void importUser(List<User> users) {
+        users.stream().forEach(ele -> {
+            String hql = "from User u where u.userId = :userId";
+            User user = (User) getSession().createQuery(hql)
+                    .setString("userId", ele.getUserId())
+                    .uniqueResult();
+            if (user == null) {
+                getSession().save(ele);
+            }
+        });
     }
 }

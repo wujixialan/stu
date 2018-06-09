@@ -14,15 +14,17 @@
                 $("#userId").text("");
                 $("#password").text("");
             });
-            layui.use(["laydate", "form", "layer"], function () {
+            layui.use(["laydate", "form", "layer", "util"], function () {
                 var $form = layui.form;
+                var $layer = layui.layer;
+                var $util = layui.util;
                 $form.verify({
                     userId: function (value, item) {
                         if (value.trim() === "") {
                             return "学号/工号不能为空";
                         }
                         if (!new RegExp(/^[\d+]{6,12}$/).test(value)) {
-                            return "学号/工号只能为数字且为 6 或 12 位";
+                            return "学号/工号输入有误";
                         }
                     },
                     password: function (value, item) {
@@ -84,12 +86,12 @@
                                 $("#userId").text("");
                                 $("#password").text("");
                                 $("#msg").text("");
-                                console.log("登录成功");
-                                layer.msg("登录成功",
+                                $layer.msg("登录成功",
                                     {
                                         icon: 6,
                                         time: 5000,
                                     });
+
                                 window.location.href = "/stu/student/to/stuInfo/get";
                             }
                         }
@@ -136,13 +138,17 @@
         <div class="layui-form-item layui-col-lg-offset3 layui-col-lg4">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="login">
-                    <i class="fa fa-sign-in"></i> 登录</button>
+                    <i class="fa fa-sign-in"></i> 登录
+                </button>
                 <button type="reset" class="layui-btn layui-btn-primary" id="reset">
-                    重置</button>
+                    重置
+                </button>
             </div>
         </div>
     </form>
 </div>
+<div id="test"></div>
+
 <br>
 <div th:insert="~{fragment/header :: footer}"></div>
 </body>

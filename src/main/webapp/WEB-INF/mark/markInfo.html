@@ -88,10 +88,10 @@
                 var type = $(this).data('type');
                 active[type] ? active[type].call(this) : '';
             });
-            $("#sidSearch").change(function () {
+            $("#sidSearch").keyup(function () {
                 $(".demoTable .layui-btn").click();
             });
-            $("#subjectName").change(function () {
+            $("#subjectName").keyup(function () {
                 $(".demoTable .layui-btn").click();
             });
             $("#reviewSearch").change(function () {

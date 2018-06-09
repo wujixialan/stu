@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 @RequestMapping(value = "/student", method = RequestMethod.GET)
@@ -130,7 +131,7 @@ public class StudentController {
             boolean flag = studentService.isSid(student);
             if (flag) {
                 studentService.stuAdd(student);
-                PagMap.map(map, "code", 200);
+                map = PagMap.map(map, "code", 200);
                 return map;
             } else {
                 PagMap.map(map, "code", 400);
@@ -153,7 +154,7 @@ public class StudentController {
             return map;
         } else {
             studentService.stuEdit(student);
-            map.put("code", 200);
+            PagMap.map(map, "code", 200);
             return map;
         }
     }
@@ -163,24 +164,30 @@ public class StudentController {
     public Map<Object, Object> importExcel(MultipartFile file) {
         Map<Object, Object> map = new HashMap<>();
         InputStream in = null;
+        List<Student> students = null;
+        AtomicInteger count = new AtomicInteger();
         if (file != null) {
             try {
 //            得到输入流
                 in = file.getInputStream();
 //            得到文件的原始名
                 String fileName = file.getOriginalFilename();
-                List<Student> students = ReadStudentExcel.readXlsx(in);
+                students = ReadStudentExcel.readXlsx(in);
                 students.stream().forEach(ele -> {
                     studentService.stuAdd(ele);
+                    count.getAndIncrement();
                 });
+                PagMap.map(map, "code", 200);
+                PagMap.map(map, "countSuccess", count.get());
+                PagMap.map(map, "countFail", students.size() - count.get());
+                return map;
             } catch (Exception e) {
                 PagMap.map(map, "code", 400);
                 PagMap.map(map, "msg", "导入学生基本信息失败");
                 return map;
             }
         }
-        PagMap.map(map, "code", 200);
-        return map;
+        return null;
     }
 
     @DeleteMapping(value = "/del/{sid}")

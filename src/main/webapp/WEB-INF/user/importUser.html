@@ -46,7 +46,6 @@
                 choose: function(obj){
                     console.log(obj);
                     obj.preview(function(index, file, result){
-                        console.log(result); //得到文件base64编码，比如图片
                         XDoc.run(result, "s.pdf", {}, "_blank");
                     });
                 },

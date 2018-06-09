@@ -1,6 +1,5 @@
 package com.stu.excel;
 
-import com.stu.entity.Student;
 import com.stu.entity.User;
 import com.stu.util.PwdEncryption;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -29,12 +28,7 @@ public class ReadUserExcel {
                 user.setUserId(row.getCell(j).getStringCellValue());
                 user.setUsername(row.getCell(j + 1).getStringCellValue());
                 user.setPassword(row.getCell(j + 2).getStringCellValue());
-                String userType = row.getCell(j + 3).getStringCellValue();
-                user.setUserType(userType);
-                if (userType.trim().equals("学生")) {
-                    Student student = new Student(user.getUserId());
-                    user.setStudent(student);
-                }
+                user.setUserType(row.getCell(j + 3).getStringCellValue());
                 user = PwdEncryption.encryption(user);
                 users.add(user);
             } catch (Exception e) {

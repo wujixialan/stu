@@ -12,6 +12,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
+
     /**
      * 登录的时候，查找用户的方法
      *
@@ -100,5 +101,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public long authorizedTotal(User user) {
         return userDao.authorizedTotal(user);
+    }
+
+    /**
+     * 导入用户的登录信息
+     *
+     * @param users
+     */
+    @Override
+    public void importUser(List<User> users) {
+        userDao.importUser(users);
     }
 }

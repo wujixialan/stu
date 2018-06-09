@@ -111,6 +111,13 @@
             <version>4.3.15.RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>4.3.15.RELEASE</version>
+        </dependency>
+
 
         <!--配置thymeleaf-->
         <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf -->
@@ -140,8 +147,20 @@
             <artifactId>font-awesome</artifactId>
             <version>4.7.0</version>
         </dependency>
+        <!--配置Jython-->
+        <!-- https://mvnrepository.com/artifact/org.python/jython -->
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython</artifactId>
+            <version>2.7.0</version>
+        </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
 
 
         <!--配置jquery-->
@@ -267,13 +286,6 @@
             <artifactId>ckeditor</artifactId>
             <version>4.7.3</version>
         </dependency>
-        <!--配置 adminlte-->
-        <!-- https://mvnrepository.com/artifact/org.webjars.bower/adminlte -->
-        <dependency>
-            <groupId>org.webjars.bower</groupId>
-            <artifactId>adminlte</artifactId>
-            <version>2.3.11</version>
-        </dependency>
 
 
         <!-- https://mvnrepository.com/artifact/org.webjars/echarts -->
@@ -324,20 +336,6 @@
             <version>1.11</version>
         </dependency>
 
-        <!--配置 tinymce-->
-        <!-- https://mvnrepository.com/artifact/org.webjars/tinymce -->
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>tinymce</artifactId>
-            <version>4.7.9</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.easemob/rest-java-sdk -->
-        <dependency>
-            <groupId>com.easemob</groupId>
-            <artifactId>rest-java-sdk</artifactId>
-            <version>1.0.5</version>
-        </dependency>
 
         <!--配置各种 Java 工具类-->
         <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->

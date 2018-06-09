@@ -14,15 +14,6 @@ public class User {
     private String password;
     private String userType;
 
-    private Student student;
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
 
     public String getUserId() {
         return userId;
@@ -87,7 +78,6 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", userType='" + userType + '\'' +
-                ", student=" + student +
                 '}';
     }
 }

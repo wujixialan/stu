@@ -51,4 +51,10 @@ public interface UserService {
      * @return
      */
     public long authorizedTotal(User user);
+
+    /**
+     * 导入用户的登录信息
+     * @param users
+     */
+    public void importUser(List<User> users);
 }

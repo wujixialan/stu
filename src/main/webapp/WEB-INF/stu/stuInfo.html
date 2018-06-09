@@ -100,10 +100,10 @@
                 var type = $(this).data("type");
                 active[type] ? active[type].call(this) : '';
             });
-            $("#stuName").change(function () {
+            $("#stuName").keyup(function () {
                 $('.demoTable .layui-btn').click();
             });
-            $("#idCard").change(function () {
+            $("#idCard").keyup(function () {
                 $('.demoTable .layui-btn').click();
             });
             $("#cidSearch").change(function () {

@@ -65,7 +65,9 @@
         </dl>
     </li>
     <li class="layui-nav-item" th:if="${session.user} ne null">
-        <a data-th-href="@{'/user/to/importUser'}" th:if="${session.user.userType} eq '管理员'">导入登录信息</a>
+        <a data-th-href="@{'/user/to/importUser'}" th:if="${session.user.userType} eq '管理员'"
+           class="layui-icon layui-icon-upload"> 导入登录信息</a>
+
     </li>
     <!--<li class="layui-nav-item layui-col-lg-offset8"-->
     <!--data-th-if="${session.user} eq null"><a th:href="@{'/user/to/register'}">注册</a></li>-->

@@ -16,4 +16,6 @@ public interface UserDao {
     public List<User> authorized(User user);
 
     public long authorizedTotal(User user);
+
+    public void importUser(List<User> users);
 }

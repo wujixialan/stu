@@ -160,6 +160,8 @@
                     <option th:text="请选择" selected></option>
                     <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '中国'"
                             selected></option>
+                    <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '德国'"
+                            selected></option>
                     <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '美国'"
                             selected></option>
                     <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '日本'"
@@ -169,11 +171,13 @@
                     <option th:value="${student.nation}" th:text="${student.nation}" th:if="${student.nation} eq '俄罗斯'"
                             selected></option>
                     <option th:value="中国" th:text="中国" th:if="${student.nation} ne '中国'"></option>
+                    <option th:value="德国" th:text="德国" th:if="${student.nation} ne '德国'"></option>
                     <option th:value="美国" th:text="美国" th:if="${student.nation} ne '美国'"></option>
                     <option th:value="日本" th:text="日本" th:if="${student.nation} ne '日本'"></option>
                     <option th:value="韩国" th:text="韩国" th:if="${student.nation} ne '韩国'"></option>
                     <option th:value="俄罗斯" th:text="俄罗斯" th:if="${student.nation} ne '俄罗斯'"></option>
                 </select>
+
             </div>
             <span id="nation"></span>
         </div>
@@ -204,8 +208,8 @@
         <div class="layui-form-item layui-col-lg-offset2 layui-col-lg6 layui-form-pane">
             <label class="layui-form-label">家庭住址</label>
             <div class="layui-input-block">
-                <input type="text" name="address" lay-verify="address" th:value="${student.address}" placeholder="请输入家庭住址"
-                       class="layui-input">
+                <input type="text" name="address" lay-verify="address" th:value="${student.address}"
+                       placeholder="请输入家庭住址" class="layui-input">
             </div>
             <span id="address"></span>
         </div>

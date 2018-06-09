@@ -51,8 +51,10 @@ public class UserController {
                 return "/user/changePassword";
             } else if (flag.equals("authorized")) {
                 return "user/authorized";
-            }else if (flag.equals("importUser")) {
+            } else if (flag.equals("importUser")) {
                 return "user/importUser";
+            } else if (flag.equals("userInfo")) {
+                return "user/userInfo";
             }
         } else {
             return "/user/login";
@@ -64,7 +66,7 @@ public class UserController {
      * 登录
      *
      * @param user：User 对象
-     * @param br：绑定 User 的验证错误信息
+     * @param br：绑定     User 的验证错误信息
      * @return
      */
     @PostMapping(value = "/login")
@@ -122,6 +124,7 @@ public class UserController {
             boolean flag = userService.findUserByUserId(user);
             if (flag) {
                 userService.save(user);
+                request.getSession().removeAttribute("user");
                 PagMap.map(map, "code", 200);
                 return map;
             } else {
@@ -177,7 +180,7 @@ public class UserController {
         user = PwdEncryption.encryption(user);
         boolean flag = userService.getOldPwd(user);
         if (flag) {
-            PagMap.map(map, "code",200);
+            PagMap.map(map, "code", 200);
             return map;
         } else {
             PagMap.map(map, "code", 400);
@@ -207,25 +210,19 @@ public class UserController {
         InputStream in = null;
         try {
             if (file != null) {
-                try {
-                    //            得到输入流
-                    in = file.getInputStream();
-                    //            得到文件的原始名
-                    String fileName = file.getOriginalFilename();
-                    List<User> users = ReadUserExcel.readXlsx(in);
-                    users.stream().forEach(ele -> {
-                        userService.save(ele);
-                    });
-                } catch (Exception e) {
-                    PagMap.map(map, "code", 400);
-                    PagMap.map(map, "msg", "导入用户登录信息失败");
-                    return map;
-                }
+                //            得到输入流
+                in = file.getInputStream();
+                //            得到文件的原始名
+                String fileName = file.getOriginalFilename();
+                List<User> users = ReadUserExcel.readXlsx(in);
+                userService.importUser(users);
             }
             PagMap.map(map, "code", 200);
             return map;
         } catch (Exception e) {
             PagMap.map(map, "code", 400);
+            PagMap.map(map, "msg", "导入用户登录信息失败");
+            e.printStackTrace();
             return map;
         }
     }

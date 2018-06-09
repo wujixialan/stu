@@ -45,7 +45,6 @@
                 choose: function(obj){
                     console.log(obj);
                     obj.preview(function(index, file, result){
-                        console.log(result); //得到文件base64编码，比如图片
                         XDoc.run(result, "s.pdf", {}, "_blank");
                     });
                 },
@@ -58,6 +57,10 @@
                         });
                     }
                     if (res.code === 200)  {
+                        $layer.msg("成功插入" + res.countSuccess + "条记录, 有" + res.countFail + "条插入失败！", {
+                            icon: 1,
+                            time: 5000,
+                        });
                         window.location.href = "/stu/student/to/stuInfo/get";
                     }
                 },

@@ -84,7 +84,7 @@ public class MarkController {
         mark.setMarkId(UUIDUtils.uuid());
         mark.setReviewId(0);
         markService.markAdd(mark);
-        map.put("code", 200);
+        PagMap.map(map, "code", 200);
         return map;
     }
 
@@ -157,24 +157,28 @@ public class MarkController {
 //            得到文件的原始名
                 String fileName = file.getOriginalFilename();
                 marks = ReadMarkExcel.readXlsx(in);
+
+                AtomicInteger count = new AtomicInteger();
+
+                marks.stream().forEach(ele -> {
+                    try {
+                        ele.setMarkId(UUIDUtils.uuid());
+                        markService.markAdd(ele);
+                        count.getAndIncrement();
+                    } catch (Exception e) {
+                    }
+                });
+                PagMap.map(map, "code", 200);
+                PagMap.map(map, "countSuccess", count.get());
+                PagMap.map(map, "countFail", marks.size() - count.get());
+                return map;
             } catch (Exception e) {
                 PagMap.map(map, "code", 400);
                 PagMap.map(map, "msg", "导入学生成绩失败");
                 return map;
             }
-            AtomicInteger count = new AtomicInteger();
-            marks.stream().forEach(ele -> {
-                ele.setMarkId(UUIDUtils.uuid());
-                try {
-                    markService.markAdd(ele);
-                } catch (Exception e) {
-                    count.getAndIncrement();
-                    e.printStackTrace();
-                }
-            });
         }
-        PagMap.map(map, "code", 200);
-        return map;
+        return null;
     }
 
     @DeleteMapping(value = "/del/{markId}")
