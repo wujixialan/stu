@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <link rel="stylesheet" href="/webjars/jquery/3.3.1/dist/jquery.min.js">
 <script language="JavaScript"
@@ -11,6 +12,8 @@
 <script language="JavaScript"
         src="/webjars/editor.md/1.5.0/editormd.js"></script>
 <link rel="stylesheet" href="/webjars/font-awesome/4.7.0/css/font-awesome.css">
+
+<form:form></form:form>
 
 <script language="JavaScript">
     $(function () {

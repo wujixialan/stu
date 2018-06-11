@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -128,7 +129,7 @@ public class InfoController {
     public String uploadImg(@RequestParam("upload") MultipartFile file,
                             @RequestParam("CKEditorFuncNum") String CKEditorFuncNum,
                             HttpServletResponse response
-                            ) throws IOException {
+    ) throws IOException {
         PrintWriter out = response.getWriter();
         String oriName = file.getOriginalFilename();
         nativePath = request.getServletContext().getRealPath("/") + "image/";
@@ -137,16 +138,26 @@ public class InfoController {
         String flag = validateImage(expandedName);
         if (flag != null) {
             out.println("<script type=\"text/javascript\">");
-            out.println("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + flag +"','')");
+            out.println("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + flag + "','')");
             out.println("</script>");
         } else {
             file.transferTo(new File(nativePath + fileName + expandedName));
             serverPath = request.getContextPath() + "/image/" + fileName + expandedName;
             out.println("<script type=\"text/javascript\">");
-            out.println("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + serverPath +"','')");
+            out.println("window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",'" + serverPath + "','')");
             out.println("</script>");
         }
         out.close();
+        return null;
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String uploadEx(MaxUploadSizeExceededException ex,
+                           @RequestParam HttpServletResponse response) throws Exception {
+        PrintWriter out = response.getWriter();
+        out.println("<script type=\"text/javascript\">");
+        out.println("window.parent.CKEDITOR.tools.callFunction(" + 0 + ",'上传文件太大了。','')");
+        out.println("</script>");
         return null;
     }
 

@@ -12,7 +12,7 @@ public class MarkAnalysis {
         AtomicReference<Double> credit = new AtomicReference<>((double) 0);
         AtomicReference<Double> gpa = new AtomicReference<>((double) 0);
         marks.stream().forEach(ele -> {
-            if (!ele.getStudy().equals("初修")) {
+            if (!ele.getStudy().equals("初修") || ele.getScore() < 60) {
                 /**
                  * 如果不等于初修，即挂过科。挂科数目加1；
                  */

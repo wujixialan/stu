@@ -66,7 +66,7 @@ public class UserController {
      * 登录
      *
      * @param user：User 对象
-     * @param br：绑定     User 的验证错误信息
+     * @param br：绑定 User 的验证错误信息
      * @return
      */
     @PostMapping(value = "/login")

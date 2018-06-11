@@ -43,7 +43,7 @@
         </tx:attributes>
     </tx:advice>
     <!--定义事务切面，并应用事务通知-->
-    <aop:config>
+    <aop:config proxy-target-class="true">
         <aop:pointcut id="bizMethods" expression="execution(* com.stu.services.*.*(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="bizMethods" />
     </aop:config>
