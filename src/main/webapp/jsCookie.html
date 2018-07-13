@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<br><br><br><br>
+<div style="padding-left: 500px;">
+    <label>cookieName：</label><span id="cookieName"></span><br>
+    <label>cookieValue：</label><span id="cookieValue"></span><br>
+    <button id="set" onclick="set('lession1')">设置cookie</button>
+    <button id="get" onclick="get('lession1')">读取cookie</button>
+</div>
+
+<script language="JavaScript">
+    function set(name) {
+        document.cookie = name + "=" + currentTime();
+    }
+
+    function get(name) {
+        var re = new RegExp(name + "=[\\S\\s]+[;]*");
+        var val = document.cookie.match(re)[0];
+        val = val.substr(val.indexOf("=") + 1);
+        document.getElementById("cookieName").innerText = name;
+        document.getElementById("cookieValue").innerText = val;
+    }
+
+    function currentTime() {
+        var now = new Date();
+        console.log(now);
+        var year = now.getFullYear();       //年
+        var month = now.getMonth() + 1;     //月
+        var day = now.getDate();            //日
+        var hh = now.getHours();            //时
+        var mm = now.getMinutes();          //分
+        var ss = now.getSeconds();          //秒
+        var clock = year + "-";
+        if (month < 10)
+            clock += "0";
+        clock += month + "-";
+        if (day < 10)
+            clock += "0";
+        clock += day + " ";
+        if (hh < 10)
+            clock += "0";
+        clock += hh + ":";
+        if (mm < 10)
+            clock += '0';
+        clock += mm + ":";
+        if (ss < 10)
+            clock += '0';
+        clock += ss;
+        return (clock);
+    }
+</script>
+
+</body>
+</html>

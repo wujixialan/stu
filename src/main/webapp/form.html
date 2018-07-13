@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>所有表单元素</title>
+</head>
+<body>
+<br><br>
+<form action="" method="get" style="padding-left: 300px">
+    <table border="0">
+        <tr>
+            <td>普通文本框</td>
+            <td><input type="text" name="text"></td>
+            <td>密码框</td>
+            <td><input type="password" name="pwd"></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>多行文本框</td>
+            <td><textarea name="textarea"></textarea></td>
+            <td>隐藏域</td>
+            <td><input type="hidden" name="hidden"></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>date</td>
+            <td>
+                <input type="date" name="date">
+            </td>
+            <td>email</td>
+            <td>
+                <input type="email" name="email">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>number</td>
+            <td>
+                <input type="number" name="number">
+            </td>
+            <td>color</td>
+            <td>
+                <input type="color" name="color">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>time</td>
+            <td>
+                <input type="time" name="time">
+            </td>
+            <td>下拉列表</td>
+            <td>
+                <select name="select">
+                    <option value="中国">中国</option>
+                    <option value="美国">美国</option>
+                    <option value="德国">德国</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>单选框</td>
+            <td>
+                <input type="radio" value="男" name="gender" checked>男
+                <input type="radio" value="女" name="gender">女
+            </td>
+            <td>多选框</td>
+            <td>
+                <input type="checkbox" name="interesing" value="足球">足球
+                <input type="checkbox" name="interesing" value="篮球">篮球
+                <input type="checkbox" name="interesing" value="排球">排球
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>上传域</td>
+            <td>
+                <input type="file" name="file">
+            </td>
+            <td>keygen</td>
+            <td>
+                <keygen data-th-name="security"></keygen>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>datalist</td>
+            <td colspan="3">
+                <input list="cars" />
+                <datalist id="cars">
+                    <option value="BMW">
+                    <option value="Ford">
+                    <option value="Volvo">
+                </datalist>
+            </td>
+        </tr>
+        <tr>
+            <td>重置按钮</td>
+            <td><input type="reset"></td>
+            <td>提交按钮</td>
+            <td><input type="submit"></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>button</td>
+            <td>
+                <button type="button" onclick="alert('这是按钮')">按钮</button>
+            </td>
+
+        </tr>
+    </table>
+</form>
+<form oninput="x.value=parseInt(a.value)+parseInt(b.value)"
+      style="padding-left: 300px">0
+    <input type="range" id="a" value="50">100
+    +<input type="number" id="b" value="50">
+    =<output name="x" for="a b"></output>
+</form>
+
+</body>
+</html>

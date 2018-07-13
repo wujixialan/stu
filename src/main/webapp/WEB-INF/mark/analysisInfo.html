@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <link rel="stylesheet" th:href="@{'/webjars/layui/2.3.0/css/layui.css'}">
+    <link rel="shortcut icon" th:href="@{'/img/favicon.ico'}">
+    <link rel="stylesheet" th:href="@{'/webjars/font-awesome/4.7.0/css/font-awesome.css'}">
+    <script language="JavaScript" th:src="@{'/webjars/jquery/3.3.1/dist/jquery.min.js'}"></script>
+    <script language="JavaScript" th:src="@{'/js/dateformat.js'}" charset="utf-8"></script>
+    <script language="JavaScript" th:src="@{'/js/common.js'}" charset="utf-8"></script>
+
+</head>
+<body>
+<ul th:insert="~{fragment/header :: top}"></ul>
+<br>
+<table id="mark" lay-filter="mark"></table>
+<div class="layui-row">
+    <div class="layui-row layui-form-item layui-col-lg-offset4 layui-col-lg3">
+        <div class="layui-input-block">
+            <a class="layui-btn" th:href="@{'/mark/to/markInfo/get/get'}">返回</a>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-radius layui-icon layui-icon-read" lay-event="analysis"> 查看结果</a>
+</script>
+
+<script th:inline="none" language="JavaScript">
+    $(function () {
+        layui.use(["table", "util", "layer", "laytpl"], function () {
+            var $table = layui.table;
+            var $utils = layui.util;
+            var $layer = layui.layer;
+            var $laytpl = layui.laytpl;
+
+            //第一个实例
+            $table.render({
+                elem: '#mark',
+                height: 465,
+                //数据接口,
+                url: '/stu/mark/analysisInfo',
+                method: "post",
+                //开启分页
+                page: true,
+                //表头
+                cols: [[
+                    {field: 'stuNo', title: '学号', align: 'center', width: 150,},
+                    {field: 'stuName', title: '姓名', align: 'center',  width: 120,},
+                    {field: 'clazzName', title: '班级', align: 'center', width: 115,},
+                    {field: 'avgScore', title: '平均成绩', align: 'center',  width: 115, sort: true,},
+                    {field: 'sumCredit', title: '总学分', align: 'center', width: 115,},
+                    {field: 'sumGpa', title: '总绩点', align: 'center',},
+                    {field: 'index', title: '排名', align: 'center', templet: "#index", sort: true,},
+                    {field: 'right', title: '操作', toolbar: "#barDemo", align: 'center',}
+                ]],
+            });
+
+            $table.on("tool(mark)", function (obj) {
+                console.log(obj);
+                if (obj.event === "analysis") {
+                    window.location.href = "/stu/mark/to/analysis/get/" + obj.data.stuNo;
+                }
+            });
+        });
+    });
+</script>
+
+
+<script th:inline="javascript" type="text/html" id="index">
+    {{#
+    return "第" + d.index + "名";
+    }}
+</script>
+<div th:insert="~{fragment/header :: footer}"></div>
+</body>
+<script language="JavaScript" th:src="@{'/webjars/layui/2.3.0/layui.all.js'}" charset="utf-8"></script>
+</html>

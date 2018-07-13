@@ -23,7 +23,7 @@
                             return "学号/工号不能为空";
                         }
                         if (!new RegExp(/^[\d+]{6,12}$/).test(value)) {
-                            return "学号/工号只能为数字且为 6 或 12 位";
+                            return "学号/工号只能为数字且为 6-12 位";
                         }
                     },
                     username: function (value, item) {

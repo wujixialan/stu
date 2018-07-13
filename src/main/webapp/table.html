@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格</title>
+    <style type="text/css">
+        table {
+            text-align: center;
+        }
+        #last td {
+            border-bottom: #000000 solid 1px;
+        }
+        .three {
+            border-right: #000000 solid 1px;
+        }
+        table tr td {
+            border-top:#000000 solid 1px;
+            border-left:#000000 solid 1px;
+        }
+        #first {
+            border-bottom: #000000 solid 1px;
+        }
+    </style>
+</head>
+<body>
+<br><br><br>
+<table style="margin-left: 300px; height: 300px;width: 800px;" cellpadding="0" cellspacing="0">
+    <tr>
+        <td colspan="2" width="240px;">标题1</td>
+        <td>标题2</td>
+        <td class="three">标题3</td>
+    </tr>
+    <tr>
+        <td rowspan="3" width="60px;" id="first">内<br>容</td>
+        <td width="180px;"></td>
+        <td width="180px;"></td>
+        <td class="three" width="180px;"></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td class="three"></td>
+    </tr>
+    <tr id="last">
+        <td></td>
+        <td></td>
+        <td class="three"></td>
+    </tr>
+</table>
+
+
+
+</body>
+</html>

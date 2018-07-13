@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script language="JavaScript" src="http://123.207.55.72/jquery.js"></script>
+    <script language="JavaScript" src="http://123.207.55.72/jquery.cookie.js"></script>
+</head>
+<body>
+<br><br><br><br>
+<div style="padding-left: 500px;">
+    <label>cookieName：</label><span id="cookieName"></span><br>
+    <label>cookieValue：</label><span id="cookieValue"></span><br>
+    <button id="set">设置cookie</button>
+    <button id="get">读取cookie</button>
+</div>
+<script language="JavaScript">
+    $(function () {
+        $("#set").click(function () {
+            $.cookie("lession1", currentTime());
+            console.log($.cookie("lession1"));
+        });
+        $("#get").click(function () {
+            console.log("lession1");
+            $("#cookieName").text("lession1");
+            $("#cookieValue").text($.cookie("lession1"));
+        });
+    });
+
+
+    function currentTime() {
+        var now = new Date();
+        var year = now.getFullYear();       //年
+        var month = now.getMonth() + 1;     //月
+        var day = now.getDate();            //日
+        var hh = now.getHours();            //时
+        var mm = now.getMinutes();          //分
+        var ss = now.getSeconds();          //秒
+        var clock = year + "-";
+        if (month < 10)
+            clock += "0";
+        clock += month + "-";
+        if (day < 10)
+            clock += "0";
+        clock += day + " ";
+        if (hh < 10)
+            clock += "0";
+        clock += hh + ":";
+        if (mm < 10)
+            clock += '0';
+        clock += mm + ":";
+        if (ss < 10)
+            clock += '0';
+        clock += ss;
+        return (clock);
+    }
+</script>
+</body>
+</html>

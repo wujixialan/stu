@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,8 @@ public class MarkController {
                 return "mark/analysis";
             } else if (flag.equals("importMark")) {
                 return "mark/importMark";
+            } else if (flag.equals("analysisInfo")) {
+                return "mark/analysisInfo";
             }
         } else {
             return "/user/login";
@@ -142,6 +145,20 @@ public class MarkController {
         PagMap.map(map, "model", model);
         PagMap.map(map, "result", results.get(sid));
         return map;
+    }
+
+    @PostMapping(value = "/analysisInfo")
+    @ResponseBody
+    public Layui analysisInfo(Model model) {
+        Map<Object, Object> map = new HashMap<>();
+        Map<String, MarkResult> results = markService.getMarkResult();
+        List<MarkResult> markResults = new ArrayList<>();
+        results.forEach((k, v) -> {
+            markResults.add(v);
+        });
+        model.addAttribute("markResults", markResults);
+        JSONArray jsonArray = JSONArray.fromObject(markResults);
+        return Layui.data(markResults.size(), jsonArray);
     }
 
     @PostMapping(value = "/importMark")

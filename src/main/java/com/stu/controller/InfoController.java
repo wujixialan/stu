@@ -78,6 +78,7 @@ public class InfoController {
     @PutMapping(value = "/edit")
     @ResponseBody
     public Map<Object, Object> edit(Info info) {
+        System.out.println("info = " + info);
         Map<Object, Object> map = new HashMap<>();
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {

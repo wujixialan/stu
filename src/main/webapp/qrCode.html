@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>手机APP下载页面：根据终端辨别下载地址</title>
+</head>
+<body>
+这是测试终端识别的页面。
+<script type="text/javascript">
+    // 获取终端的相关信息
+    var Terminal = {
+        // 辨别移动终端类型
+        version: function () {
+            var u = navigator.userAgent;
+            return {
+                // android终端或者uc浏览器
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1,
+                // 是否为iPhone或者QQHD浏览器
+                iPhone: u.indexOf('iPhone') > -1,
+                // 是否iPad
+                iPad: u.indexOf('iPad') > -1
+            };
+        }(),
+    }
+
+    // 根据不同的终端，跳转到不同的地址
+    var theUrl = 'http://123.207.55.72';
+    if (Terminal.version.android) {
+        theUrl = 'http://imtt.dd.qq.com/16891/FCC2B1D33B159114713A79F0444EC65C.apk?fsname=com.yijiuyijiu.eshop_5.9.1_156.apk&csr=1bbd';
+    } else if (Terminal.version.iPhone) {
+        theUrl = 'https://itunes.apple.com/cn/app/1919%E5%BF%AB%E5%96%9D-%E5%85%A8%E5%9C%BA%E4%BD%8E%E8%87%B30-9%E5%85%83/id1020572957?mt=8';
+    }
+    location.href = theUrl;
+</script>
+</body>
+</html>
